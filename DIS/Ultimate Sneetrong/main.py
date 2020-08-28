@@ -9,8 +9,17 @@ click the green play button in the top right to run the code.
 It will only run this specific file.
 All other code must be referenced and ran here.
 """
-
+log=open("game_log", 'w')
+log.write("Start of a new Ultimate Sneetrong debug log\n")
 screen = pygame.display.set_mode((960, 560))
+pygame.display.set_caption("Ultimate Sneetrong")
+starting_box = pygame.rect.Rect(0, 0, 500, 500)
+starting_box.normalize()
+blue_color=pygame.color.Color(0,0,255,70)
+blue_color.normalize()
+pygame.draw.rect(screen, blue_color, starting_box)
+screen.set_at((50,50),blue_color)
+pygame.display.update(starting_box)
 
 """
 Infinite loop keeps the script loaded so the screen is onscreen. 
