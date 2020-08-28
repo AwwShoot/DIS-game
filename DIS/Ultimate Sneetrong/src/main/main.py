@@ -20,14 +20,14 @@ blue_color.normalize()
 pygame.draw.rect(screen, blue_color, starting_box)
 screen.set_at((50,50),blue_color)
 pygame.display.update(starting_box)
-
+log.write("done loading")
 """
-Infinite loop keeps the script loaded so the screen is onscreen. 
+the loop keeps the script loaded so the screen is onscreen. 
 press CTRL+C or click the red square in pyCharm to force close the code.
 """
+log.write("hello")
 while True:
     pass
-
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
 # See Python help at https://docs.python.org/3/tutorial/
