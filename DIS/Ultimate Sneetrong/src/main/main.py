@@ -9,7 +9,7 @@ click the green play button in the top right to run the code.
 It will only run this specific file.
 All other code must be referenced and ran here.
 """
-log=open("game_log", 'w')
+log=open("src/logs/game_log", 'w')
 log.write("Start of a new Ultimate Sneetrong debug log\n")
 screen = pygame.display.set_mode((960, 560))
 pygame.display.set_caption("Ultimate Sneetrong")
@@ -26,8 +26,9 @@ the loop keeps the script loaded so the screen is onscreen.
 press CTRL+C or click the red square in pyCharm to force close the code.
 """
 log.write("hello")
+
 while True:
-    pass
+    log.write("cheese ")
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
 # See Python help at https://docs.python.org/3/tutorial/
