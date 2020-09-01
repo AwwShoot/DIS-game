@@ -25,10 +25,10 @@ log.write("done loading")
 the loop keeps the script loaded so the screen is onscreen. 
 press CTRL+C or click the red square in pyCharm to force close the code.
 """
-log.write("hello")
+
 
 while True:
-    log.write("cheese ")
+    pass
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
 # See Python help at https://docs.python.org/3/tutorial/
