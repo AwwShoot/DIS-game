@@ -1,4 +1,4 @@
-class snake():
+class Snake():
 
     def __init__(self, coordinates):
         """
@@ -14,14 +14,18 @@ class snake():
     """
     def move(self, direction):
         if direction=="up":
-            self.coordinates.remove(0)
-            self.coordinates.append([self.coordinates[3][0],self.coordinates[3][1] + 1])
+            self.coordinates.pop(0)
+            self.coordinates.append([self.coordinates[2][0],self.coordinates[2][1] + 1])
         if direction=="down":
-            self.coordinates.remove(0)
-            self.coordinates.append([self.coordinates[3][0], self.coordinates[3][1] - 1])
+            self.coordinates.pop(0)
+            self.coordinates.append([self.coordinates[2][0], self.coordinates[2][1] - 1])
         if direction=="left":
-            self.coordinates.remove(0)
-            self.coordinates.append([self.coordinates[3][0]-1, self.coordinates[3][1]])
+            self.coordinates.pop(0)
+            self.coordinates.append([self.coordinates[2][0]-1, self.coordinates[2][1]])
         if direction=="right":
-            self.coordinates.remove(0)
-            self.coordinates.append([self.coordinates[3][0]+1, self.coordinates[3][1]])
+            self.coordinates.pop(0)
+            self.coordinates.append([self.coordinates[2][0]+1, self.coordinates[2][1]])
+
+
+    def getcoords(self):
+        return self.coordinates
