@@ -1,6 +1,4 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
+#middle click a method or variable to see it's declaration.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 import pygame
 from snake import Snake
@@ -33,6 +31,22 @@ logwriter.writecoords(player_one.getcoords())
 player_one.move("up")
 log.write("moved upwards\n")
 logwriter.writecoords(player_one.getcoords())
+player_one.move("right")
+log.write("moved right\n")
+logwriter.writecoords(player_one.getcoords())
+player_one.move("right")
+log.write("moved right again\n")
+logwriter.writecoords(player_one.getcoords())
+player_one.move("down")
+log.write("down this time\n")
+logwriter.writecoords(player_one.getcoords())
+player_one.move("left")
+log.write("to the left now y'all\n")
+logwriter.writecoords(player_one.getcoords())
+player_one.move("up")
+log.write("and I get up again\n")
+logwriter.writecoords(player_one.getcoords())
+
 
 
 
