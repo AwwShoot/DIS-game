@@ -1,3 +1,6 @@
+import logwriter
+from logwriter import log
+
 class Snake():
 
     def __init__(self, coordinates):
@@ -14,17 +17,30 @@ class Snake():
     """
     def move(self, direction):
         if direction=="up":
+            log.write("moving up from: ")
+            logwriter.writecoords(self.coordinates)
             self.coordinates.pop(0)
             self.coordinates.append([self.coordinates[2][0],self.coordinates[2][1] + 1])
+            logwriter.writecoords(self.coordinates)
+
         if direction=="down":
+            log.write("moving down from: ")
+            logwriter.writecoords(self.coordinates)
             self.coordinates.pop(0)
             self.coordinates.append([self.coordinates[2][0], self.coordinates[2][1] - 1])
+            logwriter.writecoords(self.coordinates)
         if direction=="left":
+            log.write("moving left from: ")
+            logwriter.writecoords(self.coordinates)
             self.coordinates.pop(0)
             self.coordinates.append([self.coordinates[2][0]-1, self.coordinates[2][1]])
+            logwriter.writecoords(self.coordinates)
         if direction=="right":
+            log.write("moving right from: ")
+            logwriter.writecoords(self.coordinates)
             self.coordinates.pop(0)
             self.coordinates.append([self.coordinates[2][0]+1, self.coordinates[2][1]])
+            logwriter.writecoords(self.coordinates)
 
 
     def getcoords(self):
