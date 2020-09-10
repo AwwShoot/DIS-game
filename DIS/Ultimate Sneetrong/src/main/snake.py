@@ -11,6 +11,7 @@ class Snake():
         """
         self.coordinates=coordinates
 
+
     """
     direction will be a string that is either 'up', 'down', 'left' or 'right' representing which way the snake moves
     This function will modify the coordinates of the snake appropriately 
