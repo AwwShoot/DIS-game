@@ -1,3 +1,4 @@
+#I have no clue why these imports are showing up as errors, the code runs fine though.
 import logwriter
 from logwriter import log
 
@@ -10,11 +11,12 @@ class Ball():
         * IDK yet how "fast" this will run, so these may change in scale over development
         """
         self.coordinates=coordinates
-        self.veloctiy=velocity
+        self.velocity=velocity
 
     def move(self):
-        self.coordinates[0] += self.veloctiy[0]
-        self.coordinates[1] += self.veloctiy[1]
+        #This will be called every "frame" of the game, whatever that may be
+        self.coordinates[0] += self.velocity[0]
+        self.coordinates[1] += self.velocity[1]
 
     def bounce(self, horizontal, verticle):
         """
@@ -23,6 +25,23 @@ class Ball():
 
         """
         if(horizontal):
-            self.veloctiy[0]=0-self.veloctiy[0]
+            log.write("Bouncing horizontally: ")
+            logwriter.writecoords(self.coordinates)
+            self.velocity[0]= 0 - self.velocity[0]
         if(verticle):
-            self.veloctiy[1]=0-self.veloctiy[1]
+            log.write("Bouncing vertically: ")
+            logwriter.writecoords(self.coordinates)
+            self.velocity[1]= 0 - self.velocity[1]
+
+    def set_position(self, coordinates):
+        self.coordinates=coordinates
+
+    def set_velocity(self, velocity):
+        self.velocity=velocity
+
+#Honestly IDK if accessor methods like these have any use in Python, I just know they were important for Java so I've plunked them in
+    def get_position(self):
+        return self.coordinates
+
+    def get_velocity(self):
+        return self.velocity

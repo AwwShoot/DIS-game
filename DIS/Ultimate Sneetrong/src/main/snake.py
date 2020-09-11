@@ -44,5 +44,5 @@ class Snake():
             logwriter.writecoords(self.coordinates)
 
 
-    def getcoords(self):
+    def get_position(self):
         return self.coordinates
