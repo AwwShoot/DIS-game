@@ -1,6 +1,7 @@
 #I have no clue why these imports are showing up as errors, the code runs fine though.
 import logwriter
 from logwriter import log
+import pygame
 
 class Ball():
     def __init__(self, coordinates, velocity):
@@ -12,6 +13,9 @@ class Ball():
         """
         self.coordinates=coordinates
         self.velocity=velocity
+
+        self.collision_box = pygame.rect.Rect(self.coordinates[0], self.coordinates[1], 64, 64)
+
 
     def move(self):
         #This will be called every "frame" of the game, whatever that may be
