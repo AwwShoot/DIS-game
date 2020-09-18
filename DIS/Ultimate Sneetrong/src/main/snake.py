@@ -12,9 +12,9 @@ class Snake():
         The first pair represents the tail while the last represents the head
         """
         self.coordinates=coordinates
-        self.collision_boxes
+        self.collision_boxes=[]
         for i in coordinates:
-            self.collision_boxes.add(rect.Rect(i[0], i[1], 64, 64))
+            self.collision_boxes.append(rect.Rect(i[0], i[1], 64, 64))
 
 
     """

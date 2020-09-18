@@ -13,7 +13,7 @@ class Ball():
         """
         self.coordinates=coordinates
         self.velocity=velocity
-
+        # TODO: make four collision boxes one for each cardinal direction to determine where the ball is bouncing away from.
         self.collision_box = pygame.rect.Rect(self.coordinates[0], self.coordinates[1], 64, 64)
 
 
@@ -21,6 +21,10 @@ class Ball():
         #This will be called every "frame" of the game, whatever that may be
         self.coordinates[0] += self.velocity[0]
         self.coordinates[1] += self.velocity[1]
+        self.collision_box.move_ip(self.velocity[0], self.velocity[1])
+        logwriter.write_position(self.coordinates)
+        log.write(self.collision_box.__str__())
+
 
     def bounce(self, horizontal, verticle):
         """
@@ -43,6 +47,9 @@ class Ball():
     def set_velocity(self, velocity):
         self.velocity=velocity
 
+    def check_collision(self, snake_one, snake_two, boundaries):
+        #TBI
+        pass
 #Honestly IDK if accessor methods like these have any use in Python, I just know they were important for Java so I've plunked them in
     def get_position(self):
         return self.coordinates
