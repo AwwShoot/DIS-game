@@ -39,6 +39,10 @@ player_one.move("right")
 player_one.move("down")
 player_one.move("left")
 player_one.move("up")
+pong_ball.move()
+pong_ball.set_velocity([1.0,1.0])
+pong_ball.move()
+pong_ball.move()
 
 
 
