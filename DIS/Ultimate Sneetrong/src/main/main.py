@@ -1,9 +1,11 @@
 #middle click a method or variable to see it's declaration.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+
 import pygame
 from snake import Snake
 import logwriter
 from logwriter import log
+
 from ball import Ball
 
 """
@@ -14,19 +16,30 @@ placing words between three sets of "" quotation marks makes a multi-line commen
 using a # hashtag can make single line comments for smaller stuff.
 """
 #Initializing the game
+black = (0, 0, 0)
+
 log.write("Start of a new Ultimate Sneetrong debug log\n")
 screen = pygame.display.set_mode((960, 560))
 pygame.display.set_caption("Ultimate Sneetrong")
-#Creating test display shapes
-starting_box = pygame.rect.Rect(0, 0, 500, 500)
+#flashing the images on screen
 
-blue_color=pygame.color.Color(0,0,255,70)
+p1 = pygame.image.load(r'C:\Users\Stephen Gray\PycharmProjects\DIS-game\DIS\Ultimate Sneetrong\src\assets\bluesquare.png')
+p2 = pygame.image.load(r'C:\Users\Stephen Gray\PycharmProjects\DIS-game\DIS\Ultimate Sneetrong\src\assets\redsquare.png')
+ball = pygame.image.load(r'C:\Users\Stephen Gray\PycharmProjects\DIS-game\DIS\Ultimate Sneetrong\src\assets\ball.png')
+#need something better than the absolute path here
 
-pygame.draw.rect(screen, blue_color, starting_box)
-screen.set_at((50,50),blue_color)
-#An area of the screen must be updated with this command for any visual changes to take place
-pygame.display.update(starting_box)
-log.write("done loading\n")
+while True :
+    screen.fill(black)
+    screen.blit(p1, (960 * .25 - 32, 560 * .5 - 32))
+    screen.blit(p2, (960 * .75 - 32, 560 * .5 - 32))
+    screen.blit(ball, (960 * .5 -32, 560 * .5 - 32))
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            quit()
+        pygame.display.update()
+
+
 #Initializing the pong ball and snake objects
 pong_ball=Ball([2.0,2.0], [0.0,0.0])
 player_one =Snake([[0,0], [0,1], [1,1], [1,0]])
@@ -45,7 +58,8 @@ pong_ball.move()
 pong_ball.move()
 
 
-
+while True:
+    pass
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
