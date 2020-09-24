@@ -27,9 +27,9 @@ class Ball():
         self.coordinates[1] += self.velocity[1]
         self.sprite_box.move_ip(self.velocity[0], self.velocity[1])
         for box in self.collision_boxes:
-            box.move_ip(self.velocity[0], self.velocity[1])
+            self.collision_boxes[box](self.velocity[0], self.velocity[1])
         logwriter.write_position(self.coordinates)
-        log.write(self.collision_box.__str__())
+        log.write(self.sprite_box.__str__())
 
 
     def bounce(self, horizontal):

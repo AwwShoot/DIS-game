@@ -23,9 +23,9 @@ screen = pygame.display.set_mode((960, 560))
 pygame.display.set_caption("Ultimate Sneetrong")
 #flashing the images on screen
 
-p1 = pygame.image.load(r'C:\Users\Stephen Gray\PycharmProjects\DIS-game\DIS\Ultimate Sneetrong\src\assets\bluesquare.png')
-p2 = pygame.image.load(r'C:\Users\Stephen Gray\PycharmProjects\DIS-game\DIS\Ultimate Sneetrong\src\assets\redsquare.png')
-ball = pygame.image.load(r'C:\Users\Stephen Gray\PycharmProjects\DIS-game\DIS\Ultimate Sneetrong\src\assets\ball.png')
+p1 = pygame.image.load(r'src\assets\bluesquare.png')
+p2 = pygame.image.load(r'src\assets\redsquare.png')
+ball = pygame.image.load(r'src\assets\ball.png')
 #need something better than the absolute path here
 
 while True :
