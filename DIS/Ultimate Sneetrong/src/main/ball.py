@@ -27,7 +27,7 @@ class Ball():
         self.coordinates[1] += self.velocity[1]
         self.sprite_box.move_ip(self.velocity[0], self.velocity[1])
         for box in self.collision_boxes:
-            self.collision_boxes[box](self.velocity[0], self.velocity[1])
+            self.collision_boxes[box].move_ip(self.velocity[0], self.velocity[1])
         logwriter.write_position(self.coordinates)
         log.write(self.sprite_box.__str__())
 
@@ -40,11 +40,11 @@ class Ball():
         """
         if horizontal:
             log.write("Bouncing horizontally: ")
-            logwriter.writecoords(self.coordinates)
+            logwriter.write_position(self.coordinates)
             self.velocity[0]= 0 - self.velocity[0]
         else:
             log.write("Bouncing vertically: ")
-            logwriter.writecoords(self.coordinates)
+            logwriter.write_position(self.coordinates)
             self.velocity[1]= 0 - self.velocity[1]
 
     def set_position(self, coordinates):

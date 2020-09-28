@@ -19,20 +19,35 @@ using a # hashtag can make single line comments for smaller stuff.
 black = (0, 0, 0)
 
 log.write("Start of a new Ultimate Sneetrong debug log\n")
-screen = pygame.display.set_mode((960, 560))
+screen = pygame.display.set_mode((1024, 512))
 pygame.display.set_caption("Ultimate Sneetrong")
-#flashing the images on screen
 
 p1 = pygame.image.load(r'src\assets\bluesquare.png')
 p2 = pygame.image.load(r'src\assets\redsquare.png')
 ball = pygame.image.load(r'src\assets\ball.png')
-#need something better than the absolute path here
 
+top_boundary=pygame.rect.Rect(0,0, 1024,1)
+bottom_boundary=pygame.rect.Rect(0,512,1024,1)
+left_boundary=pygame.rect.Rect(0,512,1,512)
+right_boundary=pygame.rect.Rect(1024,512,1,512)
+boundaries=(top_boundary, bottom_boundary, left_boundary, right_boundary)
+
+#Initializing the pong ball and snake objects
+pong_ball=Ball([2.0,2.0], [0.0,0.0])
+player_one =Snake([[0,0], [0,1], [1,1], [1,0]])
+player_two=Snake([[8,8], [8,7], [8,6], [8,5]])
+log.write("initialized")
+
+
+
+#game loop
 while True :
     screen.fill(black)
     screen.blit(p1, (960 * .25 - 32, 560 * .5 - 32))
     screen.blit(p2, (960 * .75 - 32, 560 * .5 - 32))
-    screen.blit(ball, (960 * .5 -32, 560 * .5 - 32))
+    screen.blit(ball, (pong_ball.coordinates[0], pong_ball.coordinates[1]))
+    pong_ball.move()
+    pong_ball.check_collision(player_one.collision_boxes, player_two.collision_boxes, boundaries)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -40,9 +55,7 @@ while True :
         pygame.display.update()
 
 
-#Initializing the pong ball and snake objects
-pong_ball=Ball([2.0,2.0], [0.0,0.0])
-player_one =Snake([[0,0], [0,1], [1,1], [1,0]])
+
 #Testing the logwriter as well as the two gameplay objects
 logwriter.write_coordinates(player_one.get_position())
 logwriter.write_position(pong_ball.get_position())
