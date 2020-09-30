@@ -1,5 +1,5 @@
-import logwriter
-from logwriter import log
+
+from logwriter import mainwriter
 import pygame
 from pygame import rect
 

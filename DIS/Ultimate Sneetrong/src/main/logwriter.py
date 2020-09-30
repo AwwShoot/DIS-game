@@ -20,28 +20,28 @@ class Logwriter:
     def __init__(self, directory):
         self.log=open(directory, 'w')
 
-    @staticmethod
-    def write_coordinates(coordinates):
+
+    def write_coordinates(self, coordinates):
         """
 
         :param coordinates: A list of coordinate pairs
         :return: returns nothing but writes the coordinate pairs into the log
         """
-        log.write(" printing coordinates:")
+        self.log.write(" printing coordinates:")
         for i in coordinates:
             x=i[0]
             y=i[1]
-            log.write(f"({x}, {y})")
-        log.write("\n")
+            self.log.write(f"({x}, {y})")
+        self.log.write("\n")
 
-    @staticmethod
-    def write_position(coordinates):
+
+    def write_position(self, coordinates):
         """
         :param coordinates: A single coordinate pair as a list object of two ints or floats
         :return: returns nothing, but writes the coordinate pair into the log
         """
-        log.write(" printing position:")
-        log.write(f"({coordinates[0]}, {coordinates[1]}) \n")
+        self.log.write(" printing position:")
+        self.log.write(f"({coordinates[0]}, {coordinates[1]}) \n")
 
     """
     Not technically necessary, but use this instead of log.write in instances where you anticipate the same line repeating over and over and over to save space.
@@ -50,9 +50,9 @@ class Logwriter:
         if string == self.last_string:
             self.repeat_count+ 1
         elif self.repeat_count>0:
-            log.write(f"repeated the last line {self.repeat_count} times")
+            self.log.write(f"repeated the last line {self.repeat_count} times")
         else:
-            log.write(string)
+            self.log.write(string)
 
 
 

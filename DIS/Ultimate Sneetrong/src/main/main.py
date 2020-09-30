@@ -18,7 +18,6 @@ using a # hashtag can make single line comments for smaller stuff.
 #Initializing the game
 black = (0, 0, 0)
 mainwriter.write("initializing")
-log.write("Start of a new Ultimate Sneetrong debug log\n")
 screen = pygame.display.set_mode((1024, 512))
 pygame.display.set_caption("Ultimate Sneetrong")
 
