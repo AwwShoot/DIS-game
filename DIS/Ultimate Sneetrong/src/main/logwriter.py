@@ -1,4 +1,4 @@
-log=open("src/logs/game_log", 'w')
+
 """
 The first line of this file immediately creates a new log file when this is imported (I.E. when main is started)
 log is now the namespace to refer to this file. The file is write-only, but if necessary I can make it readable as well
@@ -13,25 +13,48 @@ the \ backslash can be used for fancy formatting as well.
 
 """
 
-def write_coordinates(coordinates):
-    """
+class Logwriter:
+    last_string=""
+    repeat_count=0
 
-    :param coordinates: A list of coordinate pairs
-    :return: returns nothing but writes the coordinate pairs into the log
+    def __init__(self, directory):
+        self.log=open(directory, 'w')
+
+    @staticmethod
+    def write_coordinates(coordinates):
+        """
+
+        :param coordinates: A list of coordinate pairs
+        :return: returns nothing but writes the coordinate pairs into the log
+        """
+        log.write(" printing coordinates:")
+        for i in coordinates:
+            x=i[0]
+            y=i[1]
+            log.write(f"({x}, {y})")
+        log.write("\n")
+
+    @staticmethod
+    def write_position(coordinates):
+        """
+        :param coordinates: A single coordinate pair as a list object of two ints or floats
+        :return: returns nothing, but writes the coordinate pair into the log
+        """
+        log.write(" printing position:")
+        log.write(f"({coordinates[0]}, {coordinates[1]}) \n")
+
     """
-    log.write(" printing coordinates:")
-    for i in coordinates:
-        x=i[0]
-        y=i[1]
-        log.write(f"({x}, {y})")
-    log.write("\n")
+    Not technically necessary, but use this instead of log.write in instances where you anticipate the same line repeating over and over and over to save space.
+    """
+    def write(self, string):
+        if string == self.last_string:
+            self.repeat_count+ 1
+        elif self.repeat_count>0:
+            log.write(f"repeated the last line {self.repeat_count} times")
+        else:
+            log.write(string)
 
 
-def write_position(coordinates):
-    """
 
-    :param coordinates: A single coordinate pair as a list object of two ints or floats
-    :return: returns nothing, but writes the coordinate pair into the log
-    """
-    log.write(" printing position:")
-    log.write(f"({coordinates[0]}, {coordinates[1]}) \n")
+
+mainwriter=Logwriter("src/logs/game_log")

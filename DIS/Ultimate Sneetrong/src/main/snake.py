@@ -3,7 +3,7 @@ from logwriter import log
 import pygame
 from pygame import rect
 
-class Snake():
+class Snake:
 
     def __init__(self, coordinates):
         """
@@ -25,38 +25,38 @@ class Snake():
     def move(self, direction):
         # coordinates[2] represents the current head piece before a new head piece is made
         if direction=="up":
-            log.write("moving up from: ")
-            logwriter.write_coordinates(self.coordinates)
+            mainwriter.write("moving up from: ")
+            mainwriter.write_coordinates(self.coordinates)
             self.coordinates.pop(0)
             self.collision_boxes.pop(0)
             self.coordinates.append([self.coordinates[2][0], self.coordinates[2][1] + 1])
             self.collision_boxes.append(rect.Rect(self.coordinates[2][0]*64, (self.coordinates[2][1] + 1)*64, 64, 64))
-            logwriter.write_coordinates(self.coordinates)
+            mainwriter.write_coordinates(self.coordinates)
 
         if direction=="down":
-            log.write("moving down from: ")
-            logwriter.write_coordinates(self.coordinates)
+            mainwriter.write("moving down from: ")
+            mainwriter.write_coordinates(self.coordinates)
             self.coordinates.pop(0)
             self.collision_boxes.pop(0)
             self.coordinates.append([self.coordinates[2][0], self.coordinates[2][1] - 1])
             self.collision_boxes.append(rect.Rect(self.coordinates[2][0]*64, (self.coordinates[2][1] - 1)*64, 64, 64))
-            logwriter.write_coordinates(self.coordinates)
+            mainwriter.write_coordinates(self.coordinates)
         if direction=="left":
-            log.write("moving left from: ")
-            logwriter.write_coordinates(self.coordinates)
+            mainwriter.write("moving left from: ")
+            mainwriter.write_coordinates(self.coordinates)
             self.coordinates.pop(0)
             self.collision_boxes.pop(0)
             self.coordinates.append([self.coordinates[2][0]-1, self.coordinates[2][1]])
             self.collision_boxes.append(rect.Rect((self.coordinates[2][0]-1)*64, self.coordinates[2][1]*64, 64, 64))
-            logwriter.write_coordinates(self.coordinates)
+            mainwriter.write_coordinates(self.coordinates)
         if direction=="right":
-            log.write("moving right from: ")
-            logwriter.write_coordinates(self.coordinates)
+            mainwriter.write("moving right from: ")
+            mainwriter.write_coordinates(self.coordinates)
             self.coordinates.pop(0)
             self.collision_boxes.pop(0)
             self.coordinates.append([self.coordinates[2][0]+1, self.coordinates[2][1]])
             self.collision_boxes.append(rect.Rect((self.coordinates[2][0]+1)*64, self.coordinates[2][1]*64, 64, 64))
-            logwriter.write_coordinates(self.coordinates)
+            mainwriter.write_coordinates(self.coordinates)
 
 
     def get_position(self):

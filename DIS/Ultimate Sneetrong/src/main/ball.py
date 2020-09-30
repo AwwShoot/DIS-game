@@ -1,9 +1,8 @@
 #I have no clue why these imports are showing up as errors, the code runs fine though.
-import logwriter
-from logwriter import log
+from logwriter import mainwriter
 import pygame
 
-class Ball():
+class Ball:
     def __init__(self, coordinates, velocity):
         """
 
@@ -19,17 +18,23 @@ class Ball():
         self.collision_boxes = {"top": pygame.rect.Rect(self.coordinates[0]+16, self.coordinates[1], 48, 16), "bottom": pygame.rect.Rect(self.coordinates[0]+16, self.coordinates[1]-48, 48, 16),
                                 "left": pygame.rect.Rect(self.coordinates[0], self.coordinates[1]-16, 16, 48), "right": pygame.rect.Rect(self.coordinates[0]+48, self.coordinates[1]-16, 16, 48)}
         self.sprite_box = pygame.rect.Rect(self.coordinates[0], self.coordinates[1], 64, 64)
+        # A list of recent collision checks and whether or not the ball bounced. If there are three Trues in a row, it reset's the ball's position.
+        self.recent_bounces=[False, False, False]
 
 
     def move(self):
+
         #This will be called every "frame" of the game, whatever that may be
+        if(self.recent_bounces[0] and self.recent_bounces[1] and self.recent_bounces[2]):
+            self.set_position([512, 256])
         self.coordinates[0] += self.velocity[0]
         self.coordinates[1] += self.velocity[1]
         self.sprite_box.move_ip(self.velocity[0], self.velocity[1])
         for box in self.collision_boxes:
             self.collision_boxes[box].move_ip(self.velocity[0], self.velocity[1])
-        logwriter.write_position(self.coordinates)
-        log.write(self.sprite_box.__str__())
+        self.sprite_box.move_ip(self.velocity[0], self.velocity[1])
+        mainwriter.write_position(self.coordinates)
+        mainwriter.write(self.sprite_box.__str__())
 
 
     def bounce(self, horizontal):
@@ -39,12 +44,12 @@ class Ball():
 
         """
         if horizontal:
-            log.write("Bouncing horizontally: ")
-            logwriter.write_position(self.coordinates)
+            mainwriter.write("Bouncing horizontally: ")
+            mainwriter.write_position(self.coordinates)
             self.velocity[0]= 0 - self.velocity[0]
         else:
-            log.write("Bouncing vertically: ")
-            logwriter.write_position(self.coordinates)
+            mainwriter.write("Bouncing vertically: ")
+            mainwriter.write_position(self.coordinates)
             self.velocity[1]= 0 - self.velocity[1]
 
     def set_position(self, coordinates):
@@ -61,8 +66,12 @@ class Ball():
         :param snake_two: ditto
         :param boundaries: a list of rects for any other boundaries such as the edge of the screen.
         :return: true if it bounces. note that the return statement ends the function early, so it doesn't consider multiple collisions
+        I use the return statement to end the program early as well.
+        This also updates the recent_bounces list with whether or not the ball bounces
         """
         if self.collision_boxes[box].collidelist(snake_one):
+            self.recent_bounces.pop(0)
+            self.recent_bounces.append(True)
             if box=="top" or box=="bottom":
                 self.bounce(False)
                 return True
@@ -70,6 +79,8 @@ class Ball():
                 self.bounce(True)
                 return True
         elif self.collision_boxes[box].collidelist(snake_two):
+            self.recent_bounces.pop(0)
+            self.recent_bounces.append(True)
             if box=="top" or box=="bottom":
                 self.bounce(False)
                 return True
@@ -77,12 +88,17 @@ class Ball():
                 self.bounce(True)
                 return True
         elif self.collision_boxes[box].collidelist(boundaries):
+            self.recent_bounces.pop(0)
+            self.recent_bounces.append(True)
             if box=="top" or box=="bottom":
                 self.bounce(False)
                 return True
             else:
                 self.bounce(True)
                 return True
+        self.recent_bounces.pop(0)
+        self.recent_bounces.append(False)
+        return False
 
 
 

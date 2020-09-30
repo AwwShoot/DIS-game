@@ -3,8 +3,8 @@
 
 import pygame
 from snake import Snake
-import logwriter
-from logwriter import log
+
+from logwriter import mainwriter
 
 from ball import Ball
 
@@ -17,7 +17,7 @@ using a # hashtag can make single line comments for smaller stuff.
 """
 #Initializing the game
 black = (0, 0, 0)
-
+mainwriter.write("initializing")
 log.write("Start of a new Ultimate Sneetrong debug log\n")
 screen = pygame.display.set_mode((1024, 512))
 pygame.display.set_caption("Ultimate Sneetrong")
@@ -36,7 +36,7 @@ boundaries=(top_boundary, bottom_boundary, left_boundary, right_boundary)
 pong_ball=Ball([2.0,2.0], [0.0,0.0])
 player_one =Snake([[0,0], [0,1], [1,1], [1,0]])
 player_two=Snake([[8,8], [8,7], [8,6], [8,5]])
-log.write("initialized")
+mainwriter.write("initialized")
 
 
 
@@ -71,8 +71,7 @@ pong_ball.move()
 pong_ball.move()
 
 
-while True:
-    pass
+
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
