@@ -19,26 +19,56 @@ using a # hashtag can make single line comments for smaller stuff.
 black = (0, 0, 0)
 
 log.write("Start of a new Ultimate Sneetrong debug log\n")
-screen = pygame.display.set_mode((960, 560))
+screen = pygame.display.set_mode((1024, 512))
 pygame.display.set_caption("Ultimate Sneetrong")
 #flashing the images on screen
 
 p1 = pygame.image.load(r'C:\Users\Stephen Gray\PycharmProjects\DIS-game\DIS\Ultimate Sneetrong\src\assets\bluesquare.png')
 p2 = pygame.image.load(r'C:\Users\Stephen Gray\PycharmProjects\DIS-game\DIS\Ultimate Sneetrong\src\assets\redsquare.png')
 ball = pygame.image.load(r'C:\Users\Stephen Gray\PycharmProjects\DIS-game\DIS\Ultimate Sneetrong\src\assets\ball.png')
+
+
 #need something better than the absolute path here
+
+x1 = 300
+y1 = 300
+
+x1_change = 0
+y1_change = 0
+
+clock = pygame.time.Clock()
 
 while True :
     screen.fill(black)
-    screen.blit(p1, (960 * .25 - 32, 560 * .5 - 32))
-    screen.blit(p2, (960 * .75 - 32, 560 * .5 - 32))
-    screen.blit(ball, (960 * .5 -32, 560 * .5 - 32))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             quit()
         pygame.display.update()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_a:
+                x1_change = -64
+                y1_change = 0
+            elif event.key == pygame.K_d:
+                x1_change = 64
+                y1_change = 0
+            elif event.key == pygame.K_w:
+                y1_change = -64
+                x1_change = 0
+            elif event.key == pygame.K_s:
+                y1_change = 64
+                x1_change = 0
 
+    x1 += x1_change
+    y1 += y1_change
+    screen.blit(p1, [x1, y1, 10, 10])
+
+    pygame.display.update()
+
+    clock.tick(5)
+
+
+    
 
 #Initializing the pong ball and snake objects
 pong_ball=Ball([2.0,2.0], [0.0,0.0])

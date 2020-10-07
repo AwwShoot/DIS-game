@@ -17,6 +17,11 @@ class Snake():
             self.collision_boxes.append(rect.Rect(i[0]*64, i[1]*64, 64, 64))
             # coordinates are based off a 64x64 pixel grid so each rect object will be instantiated at 64 pixels times the grid coordinate.
 
+#putting the first block of snake here
+
+
+
+
 
     """
     direction will be a string that is either 'up', 'down', 'left' or 'right' representing which way the snake moves
