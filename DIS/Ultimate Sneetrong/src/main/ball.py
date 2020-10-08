@@ -15,8 +15,8 @@ class Ball:
         # Collision boxes is a dictionary of four rectangles on the edges of the object for determining collision sides.
         # Ordered as top, bottom, left, right.
         # The following indent here has no program effect, it's just a trick to make long lines readable.
-        self.collision_boxes = {"top": pygame.rect.Rect(self.coordinates[0]+16, self.coordinates[1], 48, 16), "bottom": pygame.rect.Rect(self.coordinates[0]+16, self.coordinates[1]-48, 48, 16),
-                                "left": pygame.rect.Rect(self.coordinates[0], self.coordinates[1]-16, 16, 48), "right": pygame.rect.Rect(self.coordinates[0]+48, self.coordinates[1]-16, 16, 48)}
+        self.collision_boxes = {"top": pygame.rect.Rect(self.coordinates[0]+16, self.coordinates[1], 32, 16), "bottom": pygame.rect.Rect(self.coordinates[0]+16, self.coordinates[1]+48, 32, 16),
+                                "left": pygame.rect.Rect(self.coordinates[0], self.coordinates[1]+16, 16, 32), "right": pygame.rect.Rect(self.coordinates[0]+48, self.coordinates[1]+16, 16, 32)}
         self.sprite_box = pygame.rect.Rect(self.coordinates[0], self.coordinates[1], 64, 64)
         # A list of recent collision checks and whether or not the ball bounced. If there are three Trues in a row, it reset's the ball's position.
         self.recent_bounces=[False, False, False]
@@ -27,14 +27,15 @@ class Ball:
         #This will be called every "frame" of the game, whatever that may be
         if(self.recent_bounces[0] and self.recent_bounces[1] and self.recent_bounces[2]):
             self.set_position([512, 256])
+        if(self.coordinates[0]>1100 or self.coordinates[0]<-100 or self.coordinates[1]>612 or self.coordinates[1]<-100):
+            self.set_position([512, 256])
         self.coordinates[0] += self.velocity[0]
         self.coordinates[1] += self.velocity[1]
-        self.sprite_box.move_ip(self.velocity[0], self.velocity[1])
+        self.sprite_box.move(self.velocity[0], self.velocity[1])
         for box in self.collision_boxes:
             self.collision_boxes[box].move_ip(self.velocity[0], self.velocity[1])
         self.sprite_box.move_ip(self.velocity[0], self.velocity[1])
-        mainwriter.write_position(self.coordinates)
-        mainwriter.write(self.sprite_box.__str__())
+
 
 
     def bounce(self, horizontal):
@@ -53,7 +54,12 @@ class Ball:
             self.velocity[1]= 0 - self.velocity[1]
 
     def set_position(self, coordinates):
-        self.coordinates=coordinates
+        self.collision_boxes["top"].move_ip(coordinates[0]-self.coordinates[0], coordinates[1]-self.coordinates[1])
+        self.collision_boxes["bottom"].move_ip(coordinates[0]-self.coordinates[0], coordinates[1]-self.coordinates[1])
+        self.collision_boxes["left"].move_ip(coordinates[0]-self.coordinates[0], coordinates[1]-self.coordinates[1])
+        self.collision_boxes["right"].move_ip(coordinates[0]-self.coordinates[0], coordinates[1]-self.coordinates[1])
+        self.sprite_box.move_ip(coordinates[0]-self.coordinates[0], coordinates[1]-self.coordinates[1])
+        self.coordinates = coordinates
 
     def set_velocity(self, velocity):
         self.velocity=velocity
@@ -69,7 +75,8 @@ class Ball:
         I use the return statement to end the program early as well.
         This also updates the recent_bounces list with whether or not the ball bounces
         """
-        if self.collision_boxes[box].collidelist(snake_one):
+        if self.collision_boxes[box].collidelist(snake_one) !=-1:
+            mainwriter.write(f"{box} collided with player one")
             self.recent_bounces.pop(0)
             self.recent_bounces.append(True)
             if box=="top" or box=="bottom":
@@ -78,7 +85,8 @@ class Ball:
             else:
                 self.bounce(True)
                 return True
-        elif self.collision_boxes[box].collidelist(snake_two):
+        elif self.collision_boxes[box].collidelist(snake_two) !=-1:
+            mainwriter.write(f"{box} collided with player two")
             self.recent_bounces.pop(0)
             self.recent_bounces.append(True)
             if box=="top" or box=="bottom":
@@ -87,7 +95,8 @@ class Ball:
             else:
                 self.bounce(True)
                 return True
-        elif self.collision_boxes[box].collidelist(boundaries):
+        elif self.collision_boxes[box].collidelist(boundaries)!= -1:
+            mainwriter.write(f"{box} collided with the boundaries")
             self.recent_bounces.pop(0)
             self.recent_bounces.append(True)
             if box=="top" or box=="bottom":
@@ -116,16 +125,10 @@ class Ball:
             return True
         elif self.check_collision_box("left", snake_one, snake_two, boundaries):
             return True
-        elif self.check_collision_box("bottom", snake_one, snake_two, boundaries):
-            return True
         elif self.check_collision_box("right", snake_one, snake_two, boundaries):
             return True
+        elif self.check_collision_box("bottom", snake_one, snake_two, boundaries):
+            return True
 
 
 
-#Honestly IDK if accessor methods like these have any use in Python, I just know they were important for Java so I've plunked them in
-    def get_position(self):
-        return self.coordinates
-
-    def get_velocity(self):
-        return self.velocity

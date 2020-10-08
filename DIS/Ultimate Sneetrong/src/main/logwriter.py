@@ -15,6 +15,7 @@ the \ backslash can be used for fancy formatting as well.
 
 class Logwriter:
     last_string=""
+    last_strings=["", "", "", ""]
     repeat_count=0
 
     def __init__(self, directory):
@@ -27,12 +28,14 @@ class Logwriter:
         :param coordinates: A list of coordinate pairs
         :return: returns nothing but writes the coordinate pairs into the log
         """
-        self.log.write(" printing coordinates:")
+
+        output =" printing coordinates:"
         for i in coordinates:
             x=i[0]
             y=i[1]
-            self.log.write(f"({x}, {y})")
-        self.log.write("\n")
+            output+= f"({x}, {y})"
+        output+= "\n"
+        self.write(output)
 
 
     def write_position(self, coordinates):
@@ -40,19 +43,35 @@ class Logwriter:
         :param coordinates: A single coordinate pair as a list object of two ints or floats
         :return: returns nothing, but writes the coordinate pair into the log
         """
-        self.log.write(" printing position:")
-        self.log.write(f"({coordinates[0]}, {coordinates[1]}) \n")
+        output =" printing position:" + f"({coordinates[0]}, {coordinates[1]}) \n"
+        self.write(output)
 
     """
     Not technically necessary, but use this instead of log.write in instances where you anticipate the same line repeating over and over and over to save space.
     """
     def write(self, string):
-        if string == self.last_string:
-            self.repeat_count+ 1
+        if string in self.last_strings:
+            self.repeat_count+=1
         elif self.repeat_count>0:
-            self.log.write(f"repeated the last line {self.repeat_count} times")
+            self.log.write(f"repeated a string {self.repeat_count} times")
+            self.log.write(string)
+            self.last_string = string
+            self.last_strings.append(string)
+            self.repeat_count=0
+
         else:
             self.log.write(string)
+            self.last_string = string
+            self.last_strings.append(string)
+            self.last_strings.pop(0)
+
+
+    def end(self):
+        self.log.write(f"the following strings were repeated a total of {self.repeat_count} times \n")
+        for i in self.last_strings:
+            self.log.write(i)
+            self.log.write("\n")
+
 
 
 
