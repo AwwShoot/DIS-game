@@ -17,7 +17,9 @@ using a # hashtag can make single line comments for smaller stuff.
 """
 #Initializing the game
 black = (0, 0, 0)
+
 mainwriter.write("initializing")
+
 screen = pygame.display.set_mode((1024, 512))
 pygame.display.set_caption("Ultimate Sneetrong")
 
@@ -39,29 +41,46 @@ mainwriter.write("initialized")
 
 
 
-#game loop
-slowdown=0
+
+
+
+x1 = 300
+y1 = 300
+x1_change = 0
+y1_change = 0
+clock = pygame.time.Clock()
 while True :
-    slowdown+=1
-    if slowdown>200000:
-        slowdown=0
-        screen.fill(black)
-        screen.blit(p1, (960 /4 - 32, 560/2 - 32))
-        screen.blit(p2, (960/4 - 32, 560/2 - 32))
-        screen.blit(ball, (pong_ball.coordinates[0], pong_ball.coordinates[1]))
-        pong_ball.move()
-        pong_ball.check_collision(player_one.collision_boxes, player_two.collision_boxes, boundaries)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                mainwriter.end()
-                pygame.quit()
-                quit()
-            pygame.display.update()
+    screen.fill(black)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            quit()
+        pygame.display.update()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_a:
+                x1_change = -64
+                y1_change = 0
+            elif event.key == pygame.K_d:
+                x1_change = 64
+                y1_change = 0
+            elif event.key == pygame.K_w:
+                y1_change = -64
+                x1_change = 0
+            elif event.key == pygame.K_s:
+                y1_change = 64
+                x1_change = 0
+
+    x1 += x1_change
+    y1 += y1_change
+    screen.blit(p1, [x1, y1, 10, 10])
+
+    pygame.display.update()
+
+    clock.tick(5)
 
 
 
-
-
+    
 
 
 
