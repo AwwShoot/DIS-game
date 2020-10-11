@@ -3,8 +3,8 @@
 
 import pygame
 from snake import Snake
-import logwriter
-from logwriter import log
+
+from logwriter import mainwriter
 
 from ball import Ball
 
@@ -18,26 +18,37 @@ using a # hashtag can make single line comments for smaller stuff.
 #Initializing the game
 black = (0, 0, 0)
 
-log.write("Start of a new Ultimate Sneetrong debug log\n")
+mainwriter.write("initializing")
+
 screen = pygame.display.set_mode((1024, 512))
 pygame.display.set_caption("Ultimate Sneetrong")
-#flashing the images on screen
 
-p1 = pygame.image.load(r'C:\Users\Stephen Gray\PycharmProjects\DIS-game\DIS\Ultimate Sneetrong\src\assets\bluesquare.png')
-p2 = pygame.image.load(r'C:\Users\Stephen Gray\PycharmProjects\DIS-game\DIS\Ultimate Sneetrong\src\assets\redsquare.png')
-ball = pygame.image.load(r'C:\Users\Stephen Gray\PycharmProjects\DIS-game\DIS\Ultimate Sneetrong\src\assets\ball.png')
+p1 = pygame.image.load(r'src\assets\bluesquare.png')
+p2 = pygame.image.load(r'src\assets\redsquare.png')
+ball = pygame.image.load(r'src\assets\ball.png')
+
+top_boundary=pygame.rect.Rect(0,0, 1024,1)
+bottom_boundary=pygame.rect.Rect(0,512,1024,1)
+left_boundary=pygame.rect.Rect(0,0,1,512)
+right_boundary=pygame.rect.Rect(1024,0,1,512)
+boundaries=(top_boundary, bottom_boundary, left_boundary, right_boundary)
+
+#Initializing the pong ball and snake objects
+pong_ball=Ball([512,50], [1,2])
+player_one =Snake([[-1,-1], [-1,-1], [-1,-1], [-1,-1]])
+player_two=Snake([[-1,-1], [-1,-1], [-1,-1], [-1,-1]])
+mainwriter.write("initialized")
 
 
-#need something better than the absolute path here
+
+
+
 
 x1 = 300
 y1 = 300
-
 x1_change = 0
 y1_change = 0
-
 clock = pygame.time.Clock()
-
 while True :
     screen.fill(black)
     for event in pygame.event.get():
@@ -68,28 +79,9 @@ while True :
     clock.tick(5)
 
 
+
     
 
-#Initializing the pong ball and snake objects
-pong_ball=Ball([2.0,2.0], [0.0,0.0])
-player_one =Snake([[0,0], [0,1], [1,1], [1,0]])
-#Testing the logwriter as well as the two gameplay objects
-logwriter.write_coordinates(player_one.get_position())
-logwriter.write_position(pong_ball.get_position())
-player_one.move("up")
-player_one.move("right")
-player_one.move("right")
-player_one.move("down")
-player_one.move("left")
-player_one.move("up")
-pong_ball.move()
-pong_ball.set_velocity([1.0,1.0])
-pong_ball.move()
-pong_ball.move()
-
-
-while True:
-    pass
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
