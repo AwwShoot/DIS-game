@@ -34,9 +34,9 @@ right_boundary=pygame.rect.Rect(1024,0,1,512)
 boundaries=(top_boundary, bottom_boundary, left_boundary, right_boundary)
 
 #Initializing the pong ball and snake objects
-pong_ball=Ball([512,50], [1,2])
-player_one =Snake([[-1,-1], [-1,-1], [-1,-1], [-1,-1]])
-player_two=Snake([[-1,-1], [-1,-1], [-1,-1], [-1,-1]])
+pong_ball=Ball([512,50], [4,8])
+player_one =Snake([[0,0], [0,1], [0,2], [0,3]])
+player_two=Snake([[7,0], [7,1], [7,2], [7,3]])
 mainwriter.write("initialized")
 
 
@@ -44,10 +44,7 @@ mainwriter.write("initialized")
 
 
 
-x1 = 300
-y1 = 300
-x1_change = 0
-y1_change = 0
+
 clock = pygame.time.Clock()
 while True :
     screen.fill(black)
@@ -55,24 +52,22 @@ while True :
         if event.type == pygame.QUIT:
             pygame.quit()
             quit()
-        pygame.display.update()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_a:
-                x1_change = -64
-                y1_change = 0
+                player_one.move("left")
             elif event.key == pygame.K_d:
-                x1_change = 64
-                y1_change = 0
+                player_one.move("right")
             elif event.key == pygame.K_w:
-                y1_change = -64
-                x1_change = 0
+                player_one.move("up")
             elif event.key == pygame.K_s:
-                y1_change = 64
-                x1_change = 0
+                player_one.move("down")
 
-    x1 += x1_change
-    y1 += y1_change
-    screen.blit(p1, [x1, y1, 10, 10])
+    pong_ball.move()
+    pong_ball.check_collision(player_one.collision_boxes, player_two.collision_boxes, boundaries)
+    screen.blit(ball, (pong_ball.coordinates[0], pong_ball.coordinates[1]))
+    for box in player_one.collision_boxes:
+        screen.blit(p1, box)
+
 
     pygame.display.update()
 
