@@ -36,7 +36,7 @@ boundaries=(top_boundary, bottom_boundary, left_boundary, right_boundary)
 #Initializing the pong ball and snake objects
 pong_ball=Ball([512,50], [4,8])
 player_one =Snake([[0,0], [0,1], [0,2], [0,3]])
-player_two=Snake([[7,0], [7,1], [7,2], [7,3]])
+player_two=Snake([[15,0], [15,1], [15,2], [15,3]])
 mainwriter.write("initialized")
 
 
@@ -47,26 +47,41 @@ mainwriter.write("initialized")
 
 clock = pygame.time.Clock()
 while True :
+    moved=False
     screen.fill(black)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            mainwriter.end()
             pygame.quit()
             quit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_a:
-                player_one.move("left")
+                if player_one.last_move!="right":
+                    player_one.move("left")
+                    moved = True
             elif event.key == pygame.K_d:
-                player_one.move("right")
+                if player_one.last_move != "left":
+                    player_one.move("right")
+                    moved = True
             elif event.key == pygame.K_w:
-                player_one.move("up")
+                if player_one.last_move != "down":
+                    player_one.move("up")
+                    moved = True
             elif event.key == pygame.K_s:
-                player_one.move("down")
+                if player_one.last_move != "up":
+                    player_one.move("down")
+                    moved = True
 
+    if not moved :
+        player_one.move(player_one.last_move)
+    player_one.check_collision(player_two.collision_boxes, boundaries, 1)
     pong_ball.move()
     pong_ball.check_collision(player_one.collision_boxes, player_two.collision_boxes, boundaries)
     screen.blit(ball, (pong_ball.coordinates[0], pong_ball.coordinates[1]))
     for box in player_one.collision_boxes:
         screen.blit(p1, box)
+    for box in player_two.collision_boxes:
+        screen.blit(p2, box)
 
 
     pygame.display.update()
