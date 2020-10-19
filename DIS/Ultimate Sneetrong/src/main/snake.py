@@ -13,8 +13,8 @@ class Snake:
         """
         self.coordinates=coordinates
         self.collision_boxes=[]
-        for i in coordinates:
-            self.collision_boxes.append(rect.Rect(i[0]*64, i[1]*64, 64, 64))
+        for pair in coordinates:
+            self.collision_boxes.append(rect.Rect(pair[0]*64, pair[1]*64, 64, 64))
             # coordinates are based off a 64x64 pixel grid so each rect object will be instantiated at 64 pixels times the grid coordinate.
         #string of "up", "down", "left", or "right", which is the last direction the snake moved in. This is used to keep the snake from instantly doubling back on itself.
         self.last_move=""

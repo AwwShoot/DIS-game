@@ -20,6 +20,7 @@ class Ball:
         self.sprite_box = pygame.rect.Rect(self.coordinates[0], self.coordinates[1], 64, 64)
         # A list of recent collision checks and whether or not the ball bounced. If there are three Trues in a row, it reset's the ball's position.
         self.recent_bounces=[False, False, False]
+        self.last_hit=""
 
 
     def move(self):
@@ -74,9 +75,11 @@ class Ball:
         :return: true if it bounces. note that the return statement ends the function early, so it doesn't consider multiple collisions
         I use the return statement to end the program early as well.
         This also updates the recent_bounces list with whether or not the ball bounces
+        sets last_hit equal to p1 or p2 if player one or player two just collided with the ball
         """
         if self.collision_boxes[box].collidelist(snake_one) !=-1:
             mainwriter.write(f"{box} collided with player one")
+            self.last_hit="p1"
             self.recent_bounces.pop(0)
             self.recent_bounces.append(True)
             if box=="top" or box=="bottom":
@@ -87,6 +90,7 @@ class Ball:
                 return True
         elif self.collision_boxes[box].collidelist(snake_two) !=-1:
             mainwriter.write(f"{box} collided with player two")
+            self.last_hit="p2"
             self.recent_bounces.pop(0)
             self.recent_bounces.append(True)
             if box=="top" or box=="bottom":
