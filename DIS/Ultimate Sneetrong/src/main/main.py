@@ -8,6 +8,8 @@ from logwriter import mainwriter
 
 from ball import Ball
 
+
+
 """
 click the green play button in the top right to run the code. 
 It will only run this specific file.
@@ -27,7 +29,7 @@ p1 = pygame.image.load(r'src\assets\bluesquare.png')
 p2 = pygame.image.load(r'src\assets\redsquare.png')
 ball = pygame.image.load(r'src\assets\ball.png')
 
-top_boundary=pygame.rect.Rect(0,0, 1024,1)
+top_boundary=pygame.rect.Rect(0,-1, 1024,1)
 bottom_boundary=pygame.rect.Rect(0,512,1024,1)
 left_boundary=pygame.rect.Rect(0,0,1,512)
 right_boundary=pygame.rect.Rect(1024,0,1,512)
@@ -42,7 +44,7 @@ mainwriter.write("initialized")
 
 
 
-
+#running the game loop
 
 
 clock = pygame.time.Clock()
@@ -71,6 +73,25 @@ while True :
                 if player_one.last_move != "up":
                     player_one.move("down")
                     moved = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    if player_two.last_move != "right":
+                        player_two.move("left")
+                        moved = True
+                elif event.key == pygame.K_RIGHT:
+                    if player_two.last_move != "left":
+                        player_two.move("right")
+                        moved = True
+                elif event.key == pygame.K_UP:
+                    if player_two.last_move != "down":
+                        player_two.move("up")
+                        moved = True
+                elif event.key == pygame.K_DOWN:
+                    if player_two.last_move != "up":
+                        player_two.move("down")
+                        moved = True
+
+
 
     if not moved :
         player_one.move(player_one.last_move)
@@ -83,12 +104,21 @@ while True :
     for box in player_two.collision_boxes:
         screen.blit(p2, box)
 
+    if not moved :
+        player_two.move(player_two.last_move)
+    player_two.check_collision(player_one.collision_boxes, boundaries, 2)
+    pong_ball.move()
+    pong_ball.check_collision(player_two.collision_boxes, player_two.collision_boxes, boundaries)
+
+
+
 
     pygame.display.update()
 
-    clock.tick(5)
+    clock.tick(2.75)
 
-
+# theres some jank with snake movement, ill see if i can fix it, but if not i vote we
+# call it a feature and say that the snake likes to drift
 
     
 

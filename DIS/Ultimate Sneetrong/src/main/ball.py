@@ -2,6 +2,11 @@
 from logwriter import mainwriter
 import pygame
 
+#this makes the audio work
+pygame.init()
+
+bong = pygame.mixer.Sound(r'src/assets/pongsoundeffect.wav')
+
 class Ball:
     def __init__(self, coordinates, velocity):
         """
@@ -45,14 +50,19 @@ class Ball:
 
 
         """
+        #this makes the audio happen
         if horizontal:
             mainwriter.write("Bouncing horizontally: ")
             mainwriter.write_position(self.coordinates)
             self.velocity[0]= 0 - self.velocity[0]
+            pygame.mixer.Sound.play(bong)
+            pygame.mixer.music.stop()
         else:
             mainwriter.write("Bouncing vertically: ")
             mainwriter.write_position(self.coordinates)
             self.velocity[1]= 0 - self.velocity[1]
+            pygame.mixer.Sound.play(bong)
+            pygame.mixer.music.stop()
 
     def set_position(self, coordinates):
         self.collision_boxes["top"].move_ip(coordinates[0]-self.coordinates[0], coordinates[1]-self.coordinates[1])
