@@ -4,7 +4,7 @@ from pygame import rect
 
 class Tetronimo:
     next_ID=0
-    def __init__(self, coordinates):
+    def __init__(self, coordinates, player):
         """
 
         :param coordinates: a list of coordinate pairs for the piece.
@@ -16,6 +16,7 @@ class Tetronimo:
         self.ID=Tetronimo.next_ID
         Tetronimo.next_ID+=1
         self.active=True
+        self.player=player
 
         self.coordinates=coordinates
         self.collision_boxes=[]
@@ -30,14 +31,19 @@ class Tetronimo:
         :param tetronimos: list of tetronimos present in the world.
         checks if a tetronimo can move first before dropping it down.
         """
+        mainwriter.write(f"tetronimo {self.ID} moving down\n")
         for box in self.collision_boxes:
-            if box.collidelist(boundaries) == -1:
-                for tetron in tetronimos:
-                    if tetron.ID!=self.ID:
-                        for box in self.collision_boxes:
-                            if box.collidelist(tetron.collision_boxes) == -1:
-                                for box in self.collision_boxes:
-                                    box.move_ip(0, 64)
+            if box.collidelist(boundaries) != -1:
+                return
+        mainwriter.write(f" tetronimo {self.ID} does not collide with the floor\n")
+        for piece in tetronimos:
+            if piece.ID!=self.ID:
+                for box in self.collision_boxes:
+                    if box.collidelist(piece.collision_boxes) != -1:
+                        return
+        mainwriter.write(f"tetronimo {self.ID} does not collide with other tetronimos. moving down: \n")
+        for box in self.collision_boxes:
+            box.move_ip(0, 64)
 
     @staticmethod
     def check_lines(tetronimos):

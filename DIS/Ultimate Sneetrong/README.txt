@@ -14,5 +14,4 @@ how hard will it be to score? to win?
 
 
 work:
-snake class -S
-ball class -P
+

@@ -53,13 +53,11 @@ class Ball:
         #this makes the audio happen
         if horizontal:
             mainwriter.write("Bouncing horizontally: ")
-            mainwriter.write_position(self.coordinates)
             self.velocity[0]= 0 - self.velocity[0]
             pygame.mixer.Sound.play(bong)
             pygame.mixer.music.stop()
         else:
             mainwriter.write("Bouncing vertically: ")
-            mainwriter.write_position(self.coordinates)
             self.velocity[1]= 0 - self.velocity[1]
             pygame.mixer.Sound.play(bong)
             pygame.mixer.music.stop()
@@ -75,7 +73,7 @@ class Ball:
     def set_velocity(self, velocity):
         self.velocity=velocity
 
-    def check_collision_box(self, box, snake_one, snake_two, boundaries):
+    def check_collision_box(self, box, snake_one, snake_two, boundaries, tetronimos):
         """
 `
         :param box: a string of "top", "bottom", "left", or "right", which relates to a collision box in the dictionary of collision boxes.
@@ -119,6 +117,18 @@ class Ball:
             else:
                 self.bounce(True)
                 return True
+        elif self.collision_boxes[box].collidelist(tetronimos)!= -1:
+            mainwriter.write(f"{box} collided with the boundaries")
+            self.recent_bounces.pop(0)
+            self.recent_bounces.append(True)
+            if box=="top" or box=="bottom":
+                self.bounce(False)
+                return True
+            else:
+                self.bounce(True)
+                return True
+
+
         self.recent_bounces.pop(0)
         self.recent_bounces.append(False)
         return False
@@ -126,23 +136,36 @@ class Ball:
 
 
 
-    def check_collision(self, snake_one, snake_two, boundaries):
+    def check_collision(self, snake_one, snake_two, boundaries, tetronimos):
         """
         this will be called by the main program during the game loop
         It checks through the boxes in counterclockwise order rather than top-bottom-left-right so that verticle bounces aren't weighted as heavily
+        :param tetronimos: a list of collision boxes from tetronimos. premade in main.py
         :param snake_one: a list of collision boxes from a snake object
         :param snake_two: ditto
         :param boundaries: a list of collision boxes for any other boundaries such as the edge of the screen.
         :return: true if it bounces.
         """
-        if self.check_collision_box("top", snake_one, snake_two, boundaries):
+        if self.check_collision_box("top", snake_one, snake_two, boundaries, tetronimos):
             return True
-        elif self.check_collision_box("left", snake_one, snake_two, boundaries):
+        elif self.check_collision_box("left", snake_one, snake_two, boundaries, tetronimos):
             return True
-        elif self.check_collision_box("right", snake_one, snake_two, boundaries):
+        elif self.check_collision_box("right", snake_one, snake_two, boundaries, tetronimos):
             return True
-        elif self.check_collision_box("bottom", snake_one, snake_two, boundaries):
+        elif self.check_collision_box("bottom", snake_one, snake_two, boundaries, tetronimos):
             return True
 
 
 
+    def score(self):
+        """
+        Run this to check if a player has scored.
+        :return: 0 if no score, 1 if P1 scores (ball in right goal) 2 if P2 scores (ball in left goal)
+        """
+        if self.coordinates[0]+32>960:
+            self.set_position([512, 256])
+            return 1
+        if self.coordinates[0]+32<64:
+            self.set_position([512, 256])
+            return 2
+        return 0
