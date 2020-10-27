@@ -20,6 +20,7 @@ class Snake:
         #string of "up", "down", "left", or "right", which is the last direction the snake moved in. This is used to keep the snake from instantly doubling back on itself.
         self.last_move=""
         self.player=player
+        self.removed=False
 
 
 
@@ -65,6 +66,27 @@ class Snake:
 
 
 
+    def remove(self):
+        """
+        "deletes" the snake, so it can be respawned at a later time.
+        """
+
+        self.last_move = ""
+        self.collision_boxes = []
+        self.removed=True
+
+
+    def replace(self):
+        """
+        replaces a removed snake.
+        """
+        if self.removed:
+            self.coordinates = [[0 + (self.player * 15 - 15), 0], [0 + (self.player * 15 - 15), 1],
+                                [0 + (self.player * 15 - 15), 2], [0 + (self.player * 15 - 15), 3]]
+            for i in self.coordinates:
+                self.collision_boxes.append(rect.Rect(i[0] * 64, i[1] * 64, 64, 64))
+            self.removed=False
+
 
     def check_collision(self, opponent, boundaries, tetronimos):
         """
@@ -72,35 +94,27 @@ class Snake:
         :param opponent: list of collision boxes of the opponent snake.
         :param boundaries: list of collision boxes of the boundaries
         :param player: 1 if player 1, 2 if player 2 ect. determines the respawn X coords.
-        :return:
+        :return: True if the snake collides and is removed. False otherwise.
         """
         head=self.collision_boxes[-1]
         if head.collidelist(opponent)!=-1 or head.collidelist(boundaries)!=-1:
             mainwriter.write("snake? snaaaaake!\n")
-            self.coordinates=[[0+(self.player*15-15),0], [0+(self.player*15-15),1], [0+(self.player*15-15),2], [0+(self.player*15-15),3]]
-            self.last_move=""
-            self.collision_boxes = []
-            for i in self.coordinates:
-                self.collision_boxes.append(rect.Rect(i[0] * 64, i[1] * 64, 64, 64))
+            self.remove()
+            return True
 
         for piece in tetronimos:
             if head.collidelist(piece.collision_boxes)!=-1:
                 piece.remove()
                 mainwriter.write("snake? snaaaaake!\n")
-                self.coordinates = [[0 + (self.player * 15 - 15), 0], [0 + (self.player * 15 - 15), 1], [0 + (self.player * 15 - 15), 2], [0 + (self.player * 15 - 15), 3]]
-                self.last_move = ""
-                self.collision_boxes = []
-                for i in self.coordinates:
-                    self.collision_boxes.append(rect.Rect(i[0] * 64, i[1] * 64, 64, 64))
+                self.remove()
+                return True
 
         for i in self.coordinates:
             if i[0]<0 or i[0]>15 or i[1]<0 or i[1]>7:
                 mainwriter.write("snake out of bounds\n")
-                self.coordinates=[[0+(self.player*15-15),0], [0+(self.player*15-15),1], [0+(self.player*15-15),2], [0+(self.player*15-15),3]]
-                self.last_move=""
-                self.collision_boxes = []
-                for i in self.coordinates:
-                    self.collision_boxes.append(rect.Rect(i[0] * 64, i[1] * 64, 64, 64))
+                self.remove()
+                return True
+        return False
 
 
 
@@ -114,6 +128,8 @@ class Snake:
 
 
         chunk=Tetronimo(self.coordinates, self.player)
-        self.coordinates = [[0 + (self.player * 15 - 15), 0], [0 + (self.player * 15 - 15), 1], [0 + (self.player * 15 - 15), 2], [0 + (self.player * 15 - 15), 3]]
+        self.remove()
         return chunk
+
+
 

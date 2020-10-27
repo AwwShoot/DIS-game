@@ -43,6 +43,12 @@ tetronimos=[]
 pong_ball=Ball([512,50], [16,8])
 player_one =Snake([[0,0], [0,1], [0,2], [0,3]], 1)
 player_two=Snake([[15,0], [15,1], [15,2], [15,3]], 2)
+
+# initializing misc variables
+respawn_time=15
+p1_respawn=0
+p2_respawn=0
+Victory=False
 mainwriter.write("initialized \n")
 
 
@@ -52,7 +58,7 @@ mainwriter.write("initialized \n")
 
 
 clock = pygame.time.Clock()
-while True :
+while Victory==False :
     moved=False
     moved2=False
     screen.fill(black)
@@ -63,7 +69,7 @@ while True :
             pygame.quit()
             quit()
         # Movement
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN and player_one.removed==False:
             if event.key == pygame.K_a:
                 if player_one.last_move!="right":
                     player_one.move("left")
@@ -82,7 +88,7 @@ while True :
                     moved = True
 
         #Player 2 input
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN and player_two.removed==False:
             if event.key == pygame.K_LEFT:
                 if player_two.last_move != "right":
                     player_two.move("left")
@@ -102,6 +108,7 @@ while True :
 
 
 
+
     if not moved:
         player_one.move(player_one.last_move)
 
@@ -112,6 +119,19 @@ while True :
     for piece in tetronimos:
         piece.move(boundaries, tetronimos)
 
+    #respawn countdown
+    if p1_respawn>0:
+        if p1_respawn==1:
+            player_one.replace()
+        p1_respawn-=1
+
+    if p2_respawn>0:
+        if p2_respawn==1:
+            player_two.replace()
+        p2_respawn-=1
+
+
+
     # Collision check
     tetronimo_boxes=[]
     for piece in tetronimos:
@@ -119,18 +139,33 @@ while True :
             tetronimo_boxes.append(box)
 
     pong_ball.check_collision(player_one.collision_boxes, player_two.collision_boxes, boundaries, tetronimo_boxes)
-    player_one.check_collision(player_two.collision_boxes, boundaries, tetronimos)
-    player_two.check_collision(player_one.collision_boxes, boundaries, tetronimos)
+    if player_one.removed==False:
+        p1_collided=player_one.check_collision(player_two.collision_boxes, boundaries, tetronimos)
+    if player_two.removed==False:
+        p2_collided=player_two.check_collision(player_one.collision_boxes, boundaries, tetronimos)
+    if p1_collided:
+        p1_respawn=respawn_time
+        p1_collided=False
+    if p2_collided:
+        p2_respawn=respawn_time
+        p2_collided=False
 
     #scoring check.
     scorer=pong_ball.score()
-    if scorer==1:
+    if scorer==1 and player_one.removed==False:
         tetronimos.append(player_one.tetrify())
-    elif scorer==2:
+        p1_respawn=respawn_time/3
+    elif scorer==2 and player_two.removed==False:
         tetronimos.append(player_two.tetrify())
+        p1_respawn=respawn_time/3
+
+    #victory check
     if len(tetronimos)!=0:
-        if Tetronimo.check_lines(tetronimo_boxes)!=-1:
+        winning_line=Tetronimo.check_lines(tetronimo_boxes)
+        if winning_line!=-1:
             #USE VICTORY SCREENS HERE
+            Victory=True
+            mainwriter.write(f"line {winning_line} cleared")
             if tetronimos[len(tetronimos)-1].player==1:
                 mainwriter.write("player one won")
             else:

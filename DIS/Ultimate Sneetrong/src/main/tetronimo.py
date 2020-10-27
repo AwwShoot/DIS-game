@@ -55,12 +55,13 @@ class Tetronimo:
         tester=rect.Rect(0, 504, 8, 8)
         for y in range(8):
             for x in range(16):
-                if tester.collidelist(tetronimos):
+                if tester.collidelist(tetronimos)>-1:
                     tester.move_ip(64, 0)
                 else:
+                    mainwriter.write(f"line {y+1} is not complete, moving up.")
                     break
                 if x==15:
-                    return 7-y
+                    return y+1
             tester.move_ip(-1024,64)
         return -1
 
