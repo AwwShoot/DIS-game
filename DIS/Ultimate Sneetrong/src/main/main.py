@@ -119,8 +119,8 @@ while True :
             tetronimo_boxes.append(box)
 
     pong_ball.check_collision(player_one.collision_boxes, player_two.collision_boxes, boundaries, tetronimo_boxes)
-    player_one.check_collision(player_two.collision_boxes, boundaries, tetronimo_boxes)
-    player_two.check_collision(player_one.collision_boxes, boundaries, tetronimo_boxes)
+    player_one.check_collision(player_two.collision_boxes, boundaries, tetronimos)
+    player_two.check_collision(player_one.collision_boxes, boundaries, tetronimos)
 
     #scoring check.
     scorer=pong_ball.score()
@@ -130,6 +130,7 @@ while True :
         tetronimos.append(player_two.tetrify())
     if len(tetronimos)!=0:
         if Tetronimo.check_lines(tetronimo_boxes)!=-1:
+            #USE VICTORY SCREENS HERE
             if tetronimos[len(tetronimos)-1].player==1:
                 mainwriter.write("player one won")
             else:
@@ -142,6 +143,7 @@ while True :
         screen.blit(p1, box)
     for box in player_two.collision_boxes:
         screen.blit(p2, box)
+    # SET UP TETRONIMO SPRITES HERE
     for piece in tetronimos:
         for box in piece.collision_boxes:
             screen.blit(ball, box)

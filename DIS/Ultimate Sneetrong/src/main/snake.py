@@ -75,13 +75,24 @@ class Snake:
         :return:
         """
         head=self.collision_boxes[-1]
-        if head.collidelist(opponent)!=-1 or head.collidelist(boundaries)!=-1 or head.collidelist(tetronimos)!=-1:
+        if head.collidelist(opponent)!=-1 or head.collidelist(boundaries)!=-1:
             mainwriter.write("snake? snaaaaake!\n")
             self.coordinates=[[0+(self.player*15-15),0], [0+(self.player*15-15),1], [0+(self.player*15-15),2], [0+(self.player*15-15),3]]
             self.last_move=""
             self.collision_boxes = []
             for i in self.coordinates:
                 self.collision_boxes.append(rect.Rect(i[0] * 64, i[1] * 64, 64, 64))
+
+        for piece in tetronimos:
+            if head.collidelist(piece.collision_boxes)!=-1:
+                piece.remove()
+                mainwriter.write("snake? snaaaaake!\n")
+                self.coordinates = [[0 + (self.player * 15 - 15), 0], [0 + (self.player * 15 - 15), 1], [0 + (self.player * 15 - 15), 2], [0 + (self.player * 15 - 15), 3]]
+                self.last_move = ""
+                self.collision_boxes = []
+                for i in self.coordinates:
+                    self.collision_boxes.append(rect.Rect(i[0] * 64, i[1] * 64, 64, 64))
+
         for i in self.coordinates:
             if i[0]<0 or i[0]>15 or i[1]<0 or i[1]>7:
                 mainwriter.write("snake out of bounds\n")
