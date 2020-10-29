@@ -28,6 +28,7 @@ pygame.display.set_caption("Ultimate Sneetrong")
 p1 = pygame.image.load(r'src\assets\bluesquare.png')
 p2 = pygame.image.load(r'src\assets\redsquare.png')
 ball = pygame.image.load(r'src\assets\ball.png')
+bg = pygame.image.load(r'src\assets\background.png')
 
 top_boundary=pygame.rect.Rect(0,-1, 1024,1)
 bottom_boundary=pygame.rect.Rect(0,512,1024,1)
@@ -135,6 +136,7 @@ while True :
                 mainwriter.write("player two won")
 
     # Display update
+    screen.blit(bg, (0, 0))
     screen.blit(ball, (pong_ball.coordinates[0], pong_ball.coordinates[1]))
     for box in player_one.collision_boxes:
         screen.blit(p1, box)
@@ -145,10 +147,8 @@ while True :
             screen.blit(ball, box)
     pygame.display.update()
 
-    clock.tick(5)
+    clock.tick(3)
 
-# theres some jank with snake movement, ill see if i can fix it, but if not i vote we
-# call it a feature and say that the snake likes to drift
 
     
 
