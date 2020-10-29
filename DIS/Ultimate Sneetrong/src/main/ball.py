@@ -16,6 +16,7 @@ class Ball:
         * IDK yet how "fast" this will run, so these may change in scale over development
         """
         self.coordinates=coordinates
+        self.base_velocity=velocity
         self.velocity=velocity
         # Collision boxes is a dictionary of four rectangles on the edges of the object for determining collision sides.
         # Ordered as top, bottom, left, right.
@@ -54,11 +55,27 @@ class Ball:
         if horizontal:
             mainwriter.write("Bouncing horizontally: ")
             self.velocity[0]= 0 - self.velocity[0]
+            if self.velocity[0] > self.base_velocity[0] or self.velocity[0] < 0 - self.base_velocity[0]:
+                mainwriter.write(f"ball slowing down. horizontal speed was {self.velocity[0]}  ")
+                self.velocity[0] -= 1
+                mainwriter.write(f"now {self.velocity[0]} \n")
+
+            if self.velocity[0] < self.base_velocity[0] and self.velocity[0] > 0 - self.base_velocity[0]:
+                mainwriter.write(f"horizontal speed too low, ({self.velocity[0]}), resetting speed \n")
+                self.velocity[0] = self.base_velocity[0]
             pygame.mixer.Sound.play(bong)
             pygame.mixer.music.stop()
         else:
             mainwriter.write("Bouncing vertically: ")
             self.velocity[1]= 0 - self.velocity[1]
+            if self.velocity[1]>self.base_velocity[1] or self.velocity[1]<0-self.base_velocity[1]:
+                mainwriter.write(f"ball slowing down. verticle speed was {self.velocity[1]}  ")
+                self.velocity[1]-=1
+                mainwriter.write(f"now {self.velocity[1]} \n")
+
+            if self.velocity[1]<self.base_velocity[1] and self.velocity[1]>0-self.base_velocity[1]:
+                mainwriter.write(f'verticle speed is too low, ({self.velocity[1]}), resetting speed  \n')
+                self.velocity[1]=self.base_velocity[1]
             pygame.mixer.Sound.play(bong)
             pygame.mixer.music.stop()
 
@@ -92,9 +109,13 @@ class Ball:
             self.recent_bounces.append(True)
             if box=="top" or box=="bottom":
                 self.bounce(False)
+                if self.collision_boxes[box].collidelist(snake_one)==3:
+                    self.velocity[1]=self.base_velocity[1]*3
                 return True
             else:
                 self.bounce(True)
+                if self.collision_boxes[box].collidelist(snake_one)==3:
+                    self.velocity[0]=self.base_velocity[0]*3
                 return True
         elif self.collision_boxes[box].collidelist(snake_two) !=-1:
             mainwriter.write(f"{box} collided with player two")
@@ -103,9 +124,13 @@ class Ball:
             self.recent_bounces.append(True)
             if box=="top" or box=="bottom":
                 self.bounce(False)
+                if self.collision_boxes[box].collidelist(snake_two)==3:
+                    self.velocity[1]=self.base_velocity[1]*3
                 return True
             else:
                 self.bounce(True)
+                if self.collision_boxes[box].collidelist(snake_two)==3:
+                    self.velocity[0]=self.base_velocity[0]*3
                 return True
         elif self.collision_boxes[box].collidelist(boundaries)!= -1:
             mainwriter.write(f"{box} collided with the boundaries")

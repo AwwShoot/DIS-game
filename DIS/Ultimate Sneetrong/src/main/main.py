@@ -40,7 +40,7 @@ tetronimos=[]
 
 
 #Initializing the pong ball and snake objects
-pong_ball=Ball([512,50], [16,8])
+pong_ball=Ball([512,50], [6,3])
 player_one =Snake([[0,0], [0,1], [0,2], [0,3]], 1)
 player_two=Snake([[15,0], [15,1], [15,2], [15,3]], 2)
 
