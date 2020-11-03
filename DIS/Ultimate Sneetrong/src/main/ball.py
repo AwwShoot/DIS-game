@@ -86,6 +86,7 @@ class Ball:
         self.collision_boxes["right"].move_ip(coordinates[0]-self.coordinates[0], coordinates[1]-self.coordinates[1])
         self.sprite_box.move_ip(coordinates[0]-self.coordinates[0], coordinates[1]-self.coordinates[1])
         self.coordinates = coordinates
+        self.velocity=self.base_velocity
 
     def set_velocity(self, velocity):
         self.velocity=velocity
@@ -104,54 +105,16 @@ class Ball:
         """
         if self.collision_boxes[box].collidelist(snake_one) !=-1:
             mainwriter.write(f"{box} collided with player one")
-            self.last_hit="p1"
-            self.recent_bounces.pop(0)
-            self.recent_bounces.append(True)
-            if box=="top" or box=="bottom":
-                self.bounce(False)
-                if self.collision_boxes[box].collidelist(snake_one)==3:
-                    self.velocity[1]=self.base_velocity[1]*3
-                return True
-            else:
-                self.bounce(True)
-                if self.collision_boxes[box].collidelist(snake_one)==3:
-                    self.velocity[0]=self.base_velocity[0]*3
-                return True
+            return True
         elif self.collision_boxes[box].collidelist(snake_two) !=-1:
             mainwriter.write(f"{box} collided with player two")
-            self.last_hit="p2"
-            self.recent_bounces.pop(0)
-            self.recent_bounces.append(True)
-            if box=="top" or box=="bottom":
-                self.bounce(False)
-                if self.collision_boxes[box].collidelist(snake_two)==3:
-                    self.velocity[1]=self.base_velocity[1]*3
-                return True
-            else:
-                self.bounce(True)
-                if self.collision_boxes[box].collidelist(snake_two)==3:
-                    self.velocity[0]=self.base_velocity[0]*3
-                return True
+            return True
         elif self.collision_boxes[box].collidelist(boundaries)!= -1:
             mainwriter.write(f"{box} collided with the boundaries")
-            self.recent_bounces.pop(0)
-            self.recent_bounces.append(True)
-            if box=="top" or box=="bottom":
-                self.bounce(False)
-                return True
-            else:
-                self.bounce(True)
-                return True
+            return True
         elif self.collision_boxes[box].collidelist(tetronimos)!= -1:
             mainwriter.write(f"{box} collided with the boundaries")
-            self.recent_bounces.pop(0)
-            self.recent_bounces.append(True)
-            if box=="top" or box=="bottom":
-                self.bounce(False)
-                return True
-            else:
-                self.bounce(True)
-                return True
+            return True
 
 
         self.recent_bounces.pop(0)
@@ -171,13 +134,32 @@ class Ball:
         :param boundaries: a list of collision boxes for any other boundaries such as the edge of the screen.
         :return: true if it bounces.
         """
+        for box in self.collision_boxes:
+            if self.collision_boxes[box].colliderect(snake_one[3]) and (box=="top" or box=="bottom"):
+                self.velocity[1] = self.base_velocity[1] * 3
+            if self.collision_boxes[box].colliderect(snake_one[3]) and (box=="left" or box=="right"):
+                self.velocity[0] = self.base_velocity[0] * 3
+
+
         if self.check_collision_box("top", snake_one, snake_two, boundaries, tetronimos):
+            self.recent_bounces.pop(0)
+            self.recent_bounces.append(True)
+            self.bounce(False)
             return True
         elif self.check_collision_box("left", snake_one, snake_two, boundaries, tetronimos):
+            self.recent_bounces.pop(0)
+            self.recent_bounces.append(True)
+            self.bounce(True)
             return True
         elif self.check_collision_box("right", snake_one, snake_two, boundaries, tetronimos):
+            self.recent_bounces.pop(0)
+            self.recent_bounces.append(True)
+            self.bounce(True)
             return True
         elif self.check_collision_box("bottom", snake_one, snake_two, boundaries, tetronimos):
+            self.recent_bounces.pop(0)
+            self.recent_bounces.append(True)
+            self.bounce(False)
             return True
 
 

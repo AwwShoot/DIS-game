@@ -157,7 +157,7 @@ while Victory==False :
         p1_respawn=respawn_time/3
     elif scorer==2 and player_two.removed==False:
         tetronimos.append(player_two.tetrify())
-        p1_respawn=respawn_time/3
+        p2_respawn=respawn_time/3
 
     #victory check
     if len(tetronimos)!=0:
