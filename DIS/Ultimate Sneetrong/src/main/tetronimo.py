@@ -31,17 +31,17 @@ class Tetronimo:
         :param tetronimos: list of tetronimos present in the world.
         checks if a tetronimo can move first before dropping it down.
         """
-        mainwriter.write(f"tetronimo {self.ID} moving down\n")
+
         for box in self.collision_boxes:
             if box.collidelist(boundaries) != -1:
                 return
-        mainwriter.write(f" tetronimo {self.ID} does not collide with the floor\n")
+
         for piece in tetronimos:
             if piece.ID!=self.ID:
                 for box in self.collision_boxes:
                     if box.collidelist(piece.collision_boxes) != -1:
                         return
-        mainwriter.write(f"tetronimo {self.ID} does not collide with other tetronimos. moving down: \n")
+
         for box in self.collision_boxes:
             box.move_ip(0, 64)
 
@@ -58,7 +58,7 @@ class Tetronimo:
                 if tester.collidelist(tetronimos)>-1:
                     tester.move_ip(64, 0)
                 else:
-                    mainwriter.write(f"line {y+1} is not complete, moving up.")
+                    #mainwriter.write(f"line {y+1} is not complete, moving up.")
                     break
                 if x==15:
                     return y+1

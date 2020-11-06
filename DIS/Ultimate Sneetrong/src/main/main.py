@@ -130,6 +130,18 @@ while Victory==False :
             player_two.replace()
         p2_respawn-=1
 
+    # Display update
+    screen.blit(bg, (0, 0))
+    screen.blit(ball, (pong_ball.coordinates[0], pong_ball.coordinates[1]))
+    for box in player_one.collision_boxes:
+        screen.blit(p1, box)
+    for box in player_two.collision_boxes:
+        screen.blit(p2, box)
+     # SET UP TETRONIMO SPRITES HERE
+    for piece in tetronimos:
+        for box in piece.collision_boxes:
+           screen.blit(ball, box)
+    pygame.display.update()
 
 
     # Collision check
@@ -171,20 +183,9 @@ while Victory==False :
             else:
                 mainwriter.write("player two won")
 
-    # Display update
-    screen.blit(bg, (0, 0))
-    screen.blit(ball, (pong_ball.coordinates[0], pong_ball.coordinates[1]))
-    for box in player_one.collision_boxes:
-        screen.blit(p1, box)
-    for box in player_two.collision_boxes:
-        screen.blit(p2, box)
-    # SET UP TETRONIMO SPRITES HERE
-    for piece in tetronimos:
-        for box in piece.collision_boxes:
-            screen.blit(ball, box)
-    pygame.display.update()
 
-    clock.tick(3)
+
+    clock.tick(8)
 
 
     
