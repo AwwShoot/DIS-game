@@ -29,6 +29,14 @@ p1 = pygame.image.load(r'src\assets\bluesquare.png')
 p2 = pygame.image.load(r'src\assets\redsquare.png')
 ball = pygame.image.load(r'src\assets\ball.png')
 bg = pygame.image.load(r'src\assets\background.png')
+lbs = pygame.image.load(r'src\assets\lightbluesquare.png')
+lrs = pygame.image.load(r'src\assets\lightredsquare.png')
+awiy = pygame.image.load(r'src\assets\winscreenred.png')
+awib = pygame.image.load(r'src\assets\winscreenblue.png')
+
+vs = pygame.mixer.Sound(r'src/assets/victoryscreech.wav')
+
+
 
 top_boundary=pygame.rect.Rect(0,-1, 1024,1)
 bottom_boundary=pygame.rect.Rect(0,512,1024,1)
@@ -177,11 +185,13 @@ while Victory==False :
         if winning_line!=-1:
             #USE VICTORY SCREENS HERE
             Victory=True
+            pygame.mixer.Sound.play(vs)
+            pygame.mixer.music.stop()
             mainwriter.write(f"line {winning_line} cleared")
             if tetronimos[len(tetronimos)-1].player==1:
-                mainwriter.write("player one won")
+                screen.blit(awib (0, 0))
             else:
-                mainwriter.write("player two won")
+                screen.blit(awiy (0, 0))
 
 
 
