@@ -24,8 +24,8 @@ class Ball:
         # Collision boxes is a dictionary of four rectangles on the edges of the object for determining collision sides.
         # Ordered as top, bottom, left, right.
         # The following indent here has no program effect, it's just a trick to make long lines readable.
-        self.collision_boxes = {"left": pygame.rect.Rect(self.coordinates[0], self.coordinates[1]+16, 16, 32), "right": pygame.rect.Rect(self.coordinates[0]+48, self.coordinates[1]+16, 16, 32),
-                                "top": pygame.rect.Rect(self.coordinates[0]+16, self.coordinates[1], 32, 16), "bottom": pygame.rect.Rect(self.coordinates[0]+16, self.coordinates[1]+48, 32, 16)}
+        self.collision_boxes = {"left": pygame.rect.Rect(self.coordinates[0], self.coordinates[1]+16, 32, 32), "right": pygame.rect.Rect(self.coordinates[0]+32, self.coordinates[1]+16, 32, 32),
+                                "top": pygame.rect.Rect(self.coordinates[0]+16, self.coordinates[1], 32, 32), "bottom": pygame.rect.Rect(self.coordinates[0]+16, self.coordinates[1]+32, 32, 32)}
         self.sprite_box = pygame.rect.Rect(self.coordinates[0], self.coordinates[1], 64, 64)
         # A list of recent collision checks and whether or not the ball bounced. If there are three Trues in a row, it reset's the ball's position.
         self.recent_bounces=[False, False, False, False, False]
@@ -58,15 +58,14 @@ class Ball:
         if horizontal:
             mainwriter.write("Bouncing horizontally: \n")
             self.velocity[0]= 0 - self.velocity[0]
-            self.manage_speed()
-            pygame.mixer.Sound.play(bong)
-            pygame.mixer.music.stop()
+
         else:
             mainwriter.write("Bouncing vertically: \n")
             self.velocity[1]= 0 - self.velocity[1]
-            self.manage_speed()
-            pygame.mixer.Sound.play(bong)
-            pygame.mixer.music.stop()
+
+        self.manage_speed()
+        pygame.mixer.Sound.play(bong)
+        pygame.mixer.music.stop()
 
 
     def set_position(self, coordinates, keep_vel):
@@ -262,7 +261,7 @@ class Ball:
             mainwriter.write(f"now {self.velocity[1]} \n")
 
         # Horizontal speed
-        if self.velocity[0] < self.base_velocity[0] and self.velocity[0] > 0 - self.base_velocity[1]:
+        if self.velocity[0] < self.base_velocity[0] and self.velocity[0] > 0 - self.base_velocity[0]:
             mainwriter.write(f'horizontal speed is too low, ({self.velocity[0]}), resetting speed  \n')
             self.velocity[0] = self.base_velocity[0]
 
