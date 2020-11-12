@@ -64,7 +64,7 @@ mainwriter.write("initialized \n")
 
 #running the game loop
 
-
+count=0
 clock = pygame.time.Clock()
 while Victory==False :
     moved=False
@@ -117,10 +117,10 @@ while Victory==False :
 
 
 
-    if not moved:
+    if not moved and count==1:
         player_one.move(player_one.last_move)
 
-    if not moved2:
+    if not moved2 and count==1:
         player_two.move(player_two.last_move)
 
     pong_ball.move()
@@ -194,7 +194,9 @@ while Victory==False :
                 screen.blit(awiy (0, 0))
 
 
-
+    count+=1
+    if count>1:
+        count=0
     clock.tick(8)
 
 
