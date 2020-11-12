@@ -13,22 +13,22 @@ class Ball:
         """
 
         :param coordinates: a single coordinate pair in float form indicating the starting position of the ball. top left corner.
-        :param velocity: a list of two float values determining the change in X and Y coordinates per frame*
+        :param velocity: a list of two int values determining the change in X and Y coordinates per frame*
         * IDK yet how "fast" this will run, so these may change in scale over development
         """
         self.coordinates=coordinates
-        self.base_x_vel=velocity[0]+0
-        self.base_y_vel=velocity[1]+0
-        self.base_velocity=[self.base_x_vel, self.base_y_vel]
+        self.base_x=6
+        self.base_y=3
+
         self.velocity=velocity
         # Collision boxes is a dictionary of four rectangles on the edges of the object for determining collision sides.
-        # Ordered as top, bottom, left, right.
+        # Ordered as left right top bottom.
         # The following indent here has no program effect, it's just a trick to make long lines readable.
         self.collision_boxes = {"left": pygame.rect.Rect(self.coordinates[0], self.coordinates[1]+16, 32, 32), "right": pygame.rect.Rect(self.coordinates[0]+32, self.coordinates[1]+16, 32, 32),
                                 "top": pygame.rect.Rect(self.coordinates[0]+16, self.coordinates[1], 32, 32), "bottom": pygame.rect.Rect(self.coordinates[0]+16, self.coordinates[1]+32, 32, 32)}
         self.sprite_box = pygame.rect.Rect(self.coordinates[0], self.coordinates[1], 64, 64)
-        # A list of recent collision checks and whether or not the ball bounced. If there are three Trues in a row, it reset's the ball's position.
-        self.recent_bounces=[False, False, False, False, False]
+        # A list of recent collision checks and whether or not the ball bounced. If there are three Trues in a row, it resets the ball's position.
+        self.recent_bounces=[False, False, False]
         self.last_hit=""
 
 
@@ -82,12 +82,12 @@ class Ball:
         self.collision_boxes["right"].move_ip(coordinates[0]-self.coordinates[0], coordinates[1]-self.coordinates[1])
         self.sprite_box.move_ip(coordinates[0]-self.coordinates[0], coordinates[1]-self.coordinates[1])
         self.coordinates = coordinates
-        if not keep_vel:
-            mainwriter.write(f"resetting the velocity to {self.base_velocity[0]}, {self.base_velocity[1]} \n")
-            self.velocity=self.base_velocity
+        if not keep_vel: #This is for if the ball is getting out of bounds or collision issues due to it's speed.
+            mainwriter.write(f"resetting the velocity to {self.base_x}, {self.base_y} \n") #This output is seen when verticle velocity=0, and says that base_velocity[1]=0
+            self.velocity[0]=self.base_x
+            self.velocity[1]=self.base_y
 
-    def set_velocity(self, velocity):
-        self.velocity=velocity
+
 
     def check_collision_box(self, box, snake_one, snake_two, boundaries, tetronimos):
         """
@@ -137,48 +137,57 @@ class Ball:
             if len(snake_one)==4:
                 if self.collision_boxes[box].colliderect(snake_one[3]) and (box=="left" or box=="right"):
                     if box=="left":
-                        self.set_position([self.coordinates[0]+64, self.coordinates[1]], True)
+                        self.set_position([self.coordinates[0]+96, self.coordinates[1]], True)
                         pygame.mixer.Sound.play(bam)
                         pygame.mixer.music.stop()
+                        self.velocity[0] = 30
                     else:
-                        self.set_position([self.coordinates[0]-64, self.coordinates[1]], True)
+                        self.set_position([self.coordinates[0]-96, self.coordinates[1]], True)
                         pygame.mixer.Sound.play(bam)
                         pygame.mixer.music.stop()
+                        self.velocity[0] = -30
                 if self.collision_boxes[box].colliderect(snake_one[3]) and (box=="top" or box=="bottom"):
-                    self.velocity[1] = self.base_velocity[1] * 2
-                    if box=="top":
-                        self.set_position([self.coordinates[0], self.coordinates[1]+64], True)
-                        pygame.mixer.Sound.play(bam)
-                        pygame.mixer.music.stop()
-                    else:
-                        self.set_position([self.coordinates[0], self.coordinates[1] - 64], True)
-                        pygame.mixer.Sound.play(bam)
-                        pygame.mixer.music.stop()
 
-                    self.velocity[0] = self.base_velocity[0] * 2
+                    if box=="top":
+                        self.set_position([self.coordinates[0], self.coordinates[1]+96], True)
+                        pygame.mixer.Sound.play(bam)
+                        pygame.mixer.music.stop()
+                        self.velocity[1] = 30
+                    else:
+                        self.set_position([self.coordinates[0], self.coordinates[1] - 96], True)
+                        pygame.mixer.Sound.play(bam)
+                        pygame.mixer.music.stop()
+                        self.velocity[1] = -30
+
+
 
             if len(snake_two) == 4:
                 if self.collision_boxes[box].colliderect(snake_two[3]) and (box=="left" or box=="right"):
                     if box=="left":
-                        self.set_position([self.coordinates[0]+64, self.coordinates[1]], True)
+                        self.set_position([self.coordinates[0]+96, self.coordinates[1]], True)
                         pygame.mixer.Sound.play(bam)
                         pygame.mixer.music.stop()
+                        self.velocity[0] = 30
                     else:
-                        self.set_position([self.coordinates[0]-64, self.coordinates[1]], True)
+                        self.set_position([self.coordinates[0]-96, self.coordinates[1]], True)
                         pygame.mixer.Sound.play(bam)
                         pygame.mixer.music.stop()
-                if self.collision_boxes[box].colliderect(snake_two[3]) and (box=="top" or box=="bottom"):
-                    self.velocity[1] = self.base_velocity[1] * 2
-                    if box=="top":
-                        self.set_position([self.coordinates[0], self.coordinates[1]+64], True)
-                        pygame.mixer.Sound.play(bam)
-                        pygame.mixer.music.stop()
-                    else:
-                        self.set_position([self.coordinates[0], self.coordinates[1] - 64], True)
-                        pygame.mixer.Sound.play(bam)
-                        pygame.mixer.music.stop()
+                        self.velocity[0] = -30
 
-                    self.velocity[0] = self.base_velocity[0] * 2
+                if self.collision_boxes[box].colliderect(snake_two[3]) and (box=="top" or box=="bottom"):
+
+                    if box=="top":
+                        self.set_position([self.coordinates[0], self.coordinates[1]+96], True)
+                        pygame.mixer.Sound.play(bam)
+                        pygame.mixer.music.stop()
+                        self.velocity[1] = 30
+                    else:
+                        self.set_position([self.coordinates[0], self.coordinates[1] - 96], True)
+                        pygame.mixer.Sound.play(bam)
+                        pygame.mixer.music.stop()
+                        self.velocity[1] = -30
+
+
 
 
 
@@ -246,31 +255,34 @@ class Ball:
         return 0
 
     def manage_speed(self):
-        if self.velocity[1] < self.base_velocity[1] and self.velocity[1] > 0 - self.base_velocity[1]:
-            mainwriter.write(f'verticle speed is too low, ({self.velocity[1]}), resetting speed  \n')
-            self.velocity[1] = self.base_velocity[1]
+        """
+        Called whenever the ball bounces to slow down the ball if it's too fast or fix it if it gets too low.
+        """
+        if self.velocity[1] < self.base_y and self.velocity[1] > 0 - self.base_y: #Resets verticle velocity if it is lower than the base velocity and higher than the negative of the base
+            mainwriter.write(f'verticle speed is too low, ({self.velocity[1]}), resetting speed  \n') #mainwriter is a seperate class using the I/0 features to output info to a log file for debugging.
+            self.velocity[1] = self.base_y
 
-        if self.velocity[1] > self.base_velocity[1]:
+        if self.velocity[1] > self.base_y:
             mainwriter.write(f"ball slowing down. verticle speed was {self.velocity[1]}  ")
             self.velocity[1] -= 1
             mainwriter.write(f"now {self.velocity[1]} \n")
 
-        if self.velocity[1] < 0 - self.base_velocity[1]:
+        elif self.velocity[1] < 0 - self.base_y:
             mainwriter.write(f"ball slowing down. verticle speed was {self.velocity[1]}  ")
             self.velocity[1] += 1
             mainwriter.write(f"now {self.velocity[1]} \n")
 
         # Horizontal speed
-        if self.velocity[0] < self.base_velocity[0] and self.velocity[0] > 0 - self.base_velocity[0]:
-            mainwriter.write(f'horizontal speed is too low, ({self.velocity[0]}), resetting speed  \n')
-            self.velocity[0] = self.base_velocity[0]
+        if self.velocity[0] < self.base_x and self.velocity[0] > 0 - self.base_x: #Same as the hashtag marked line for verticle velocity.
+            mainwriter.write(f'horizontal speed is too low, ({self.velocity[0]}), resetting speed  \n') #These outputs are never seen in the output log.
+            self.velocity[0] = self.base_x
 
-        if self.velocity[0] > self.base_velocity[0]:
+        if self.velocity[0] > self.base_x:
             mainwriter.write(f"ball slowing down. horizontal speed was {self.velocity[0]}  ")
             self.velocity[0] -= 1
             mainwriter.write(f"now {self.velocity[0]} \n")
 
-        if self.velocity[0] < 0 - self.base_velocity[0]:
+        elif self.velocity[0] < 0 - self.base_x:
             mainwriter.write(f"ball slowing down. horizontal speed was {self.velocity[0]}  ")
             self.velocity[0] += 1
             mainwriter.write(f"now {self.velocity[0]} \n")
