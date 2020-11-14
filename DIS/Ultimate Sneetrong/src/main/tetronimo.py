@@ -58,7 +58,7 @@ class Tetronimo:
                 if tester.collidelist(tetronimos)>-1:
                     tester.move_ip(64, 0)
                 else:
-                    #mainwriter.write(f"line {y+1} is not complete, moving up.")
+                    mainwriter.write(f"line {y+1} is not complete, moving up.")
                     break
                 if x==15:
                     return y+1

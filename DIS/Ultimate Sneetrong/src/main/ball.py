@@ -146,18 +146,7 @@ class Ball:
                         pygame.mixer.Sound.play(bam)
                         pygame.mixer.music.stop()
                         self.velocity[0] = -30
-                if self.collision_boxes[box].colliderect(snake_one[3]) and (box=="top" or box=="bottom"):
 
-                    if box=="top":
-                        self.set_position([self.coordinates[0], self.coordinates[1]+96], True)
-                        pygame.mixer.Sound.play(bam)
-                        pygame.mixer.music.stop()
-                        self.velocity[1] = 30
-                    else:
-                        self.set_position([self.coordinates[0], self.coordinates[1] - 96], True)
-                        pygame.mixer.Sound.play(bam)
-                        pygame.mixer.music.stop()
-                        self.velocity[1] = -30
 
 
 
@@ -174,18 +163,9 @@ class Ball:
                         pygame.mixer.music.stop()
                         self.velocity[0] = -30
 
-                if self.collision_boxes[box].colliderect(snake_two[3]) and (box=="top" or box=="bottom"):
 
-                    if box=="top":
-                        self.set_position([self.coordinates[0], self.coordinates[1]+96], True)
-                        pygame.mixer.Sound.play(bam)
-                        pygame.mixer.music.stop()
-                        self.velocity[1] = 30
-                    else:
-                        self.set_position([self.coordinates[0], self.coordinates[1] - 96], True)
-                        pygame.mixer.Sound.play(bam)
-                        pygame.mixer.music.stop()
-                        self.velocity[1] = -30
+                        
+
 
 
 

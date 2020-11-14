@@ -69,7 +69,7 @@ clock = pygame.time.Clock()
 while Victory==False :
     moved=False
     moved2=False
-    screen.fill(black)
+
     for event in pygame.event.get():
         #Quit clause
         if event.type == pygame.QUIT:
@@ -185,13 +185,7 @@ while Victory==False :
         if winning_line!=-1:
             #USE VICTORY SCREENS HERE
             Victory=True
-            pygame.mixer.Sound.play(vs)
-            pygame.mixer.music.stop()
-            mainwriter.write(f"line {winning_line} cleared")
-            if tetronimos[len(tetronimos)-1].player==1:
-                screen.blit(awib (0, 0))
-            else:
-                screen.blit(awiy (0, 0))
+
 
 
     count+=1
@@ -199,6 +193,24 @@ while Victory==False :
         count=0
     clock.tick(8)
 
+#End of game, main game loop is finished
+pygame.mixer.Sound.play(vs)
+pygame.mixer.music.stop()
+mainwriter.write(f"line {winning_line} cleared")
+if tetronimos[len(tetronimos)-1].player==1:
+    screen.blit(awib, (0, 0))
+else:
+    screen.blit(awiy, (0, 0))
+while True:
+
+
+
+    for event in pygame.event.get():
+        #Quit clause
+        if event.type == pygame.QUIT:
+            mainwriter.end()
+            pygame.quit()
+            quit()
 
     
 
