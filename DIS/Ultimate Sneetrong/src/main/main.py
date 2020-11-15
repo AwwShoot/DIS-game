@@ -41,7 +41,30 @@ title = pygame.image.load(r'src\assets\titlescreen.png')
 
 vs = pygame.mixer.Sound(r'src/assets/victoryscreech.wav')
 
+'''
+this seems to have stopped working for some reason
 
+while Gamestart == False:
+        mouse = pygame.mouse.get_pos()
+        click = pygame.mouse.get_pressed()
+        screen.fill(black)
+        screen.blit(title, (0, 0))
+        for event in pygame.event.get():
+            print(event)
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+        if 858 + 122 > mouse[0] > 858 and 38 + 28 > mouse[1] > 38:
+            pygame.draw.rect(screen, red, (858, 38, 122, 28))
+
+            if click[0] == 1:
+                Gamestart = True
+
+        else:
+            pygame.draw.rect(screen, green, (858, 38, 122, 28))
+        pygame.display.update()
+
+'''
 
 top_boundary=pygame.rect.Rect(0,-1, 1024,1)
 bottom_boundary=pygame.rect.Rect(0,512,1024,1)
@@ -119,34 +142,9 @@ while Victory==False :
                     player_two.move("down")
                     moved2 = True
 
+
+
 #right and proper coordinates: (858, 38, 122, 28)
-
-
-while Gamestart==False :
-    mouse = pygame.mouse.get_pos()
-    click = pygame.mouse.get_pressed()
-    for event in pygame.event.get():
-        print(event)
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            quit()
-    if 858 + 122 > mouse[0] > 858 and 38 + 28 > mouse[1] > 38:
-        pygame.draw.rect(screen, red, (858, 38, 122, 28))
-
-        if click[0] == 1 :
-            Gamestart=True
-
-    else:
-        pygame.draw.rect(screen, green, (858, 38, 122, 28))
-    pygame.display.update()
-
-
-    screen.fill(black)
-    screen.blit(title, (0,0))
-
-
-
-
 
 
     if not moved and count==1:
