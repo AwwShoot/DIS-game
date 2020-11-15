@@ -44,25 +44,7 @@ vs = pygame.mixer.Sound(r'src/assets/victoryscreech.wav')
 '''
 this seems to have stopped working for some reason
 
-while Gamestart == False:
-        mouse = pygame.mouse.get_pos()
-        click = pygame.mouse.get_pressed()
-        screen.fill(black)
-        screen.blit(title, (0, 0))
-        for event in pygame.event.get():
-            print(event)
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-        if 858 + 122 > mouse[0] > 858 and 38 + 28 > mouse[1] > 38:
-            pygame.draw.rect(screen, red, (858, 38, 122, 28))
 
-            if click[0] == 1:
-                Gamestart = True
-
-        else:
-            pygame.draw.rect(screen, green, (858, 38, 122, 28))
-        pygame.display.update()
 
 '''
 
@@ -91,6 +73,29 @@ mainwriter.write("initialized \n")
 
 
 #running the game loop
+
+
+while Gamestart == False:
+        mouse = pygame.mouse.get_pos()
+        click = pygame.mouse.get_pressed()
+        screen.fill(black)
+        screen.blit(title, (0, 0))
+        for event in pygame.event.get():
+            print(event)
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+        if 858 + 122 > mouse[0] > 858 and 38 + 28 > mouse[1] > 38:
+            pygame.draw.rect(screen, red, (858, 38, 122, 28))
+
+            if click[0] == 1:
+                Gamestart = True
+
+        else:
+            pygame.draw.rect(screen, green, (858, 38, 122, 28))
+        pygame.display.update()
+
+
 
 count=0
 clock = pygame.time.Clock()
