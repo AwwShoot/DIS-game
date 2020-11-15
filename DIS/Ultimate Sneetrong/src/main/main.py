@@ -19,6 +19,10 @@ using a # hashtag can make single line comments for smaller stuff.
 """
 #Initializing the game
 black = (0, 0, 0)
+red = (200,0,0)
+green = (0,200,0)
+bright_red = (255,0,0)
+bright_green = (0,255,0)
 
 mainwriter.write("initializing\n")
 
@@ -33,6 +37,7 @@ lbs = pygame.image.load(r'src\assets\lightbluesquare.png')
 lrs = pygame.image.load(r'src\assets\lightredsquare.png')
 awiy = pygame.image.load(r'src\assets\winscreenred.png')
 awib = pygame.image.load(r'src\assets\winscreenblue.png')
+title = pygame.image.load(r'src\assets\titlescreen.png')
 
 vs = pygame.mixer.Sound(r'src/assets/victoryscreech.wav')
 
@@ -57,8 +62,8 @@ respawn_time=15
 p1_respawn=0
 p2_respawn=0
 Victory=False
+Gamestart=False
 mainwriter.write("initialized \n")
-
 
 
 
@@ -113,6 +118,33 @@ while Victory==False :
                 if player_two.last_move != "up":
                     player_two.move("down")
                     moved2 = True
+
+#right and proper coordinates: (858, 38, 122, 28)
+
+
+while Gamestart==False :
+    mouse = pygame.mouse.get_pos()
+    click = pygame.mouse.get_pressed()
+    for event in pygame.event.get():
+        print(event)
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            quit()
+    if 858 + 122 > mouse[0] > 858 and 38 + 28 > mouse[1] > 38:
+        pygame.draw.rect(screen, red, (858, 38, 122, 28))
+
+        if click[0] == 1 :
+            Gamestart=True
+
+    else:
+        pygame.draw.rect(screen, green, (858, 38, 122, 28))
+    pygame.display.update()
+
+
+    screen.fill(black)
+    screen.blit(title, (0,0))
+
+
 
 
 
