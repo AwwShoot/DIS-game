@@ -52,18 +52,22 @@ class Tetronimo:
         :param tetronimos: a list of active tetronimo objects
         :return: the Y coordinate of the line completed. returns -1 if no line is completed
         """
-        tester=rect.Rect(0, 504, 8, 8)
-        for y in range(8):
-            for x in range(16):
-                if tester.collidelist(tetronimos)>-1:
-                    tester.move_ip(64, 0)
+        tester=rect.Rect(1, 1, 1, 1)
+        for y in range(8): # Each iteration of this loop is checking one row. Starts at the top.
+            for x in range(16): #Each iteration is a specific tile.
+                if tester.collidelist(tetronimos)!=-1: #If tester collides on that tile...
+                    #mainwriter.write(f"positive tile at {x*64}, {y*64}")
+                    tester.move_ip(64, 0) #tester moves horizontally to the next tile.
+                    if x==15: #If this is the final tile of the row, which does collide with tester...
+                        return 8-y #It calls the winning row out.
                 else:
-                    mainwriter.write(f"line {y+1} is not complete, moving up.")
-                    break
-                if x==15:
-                    return y+1
-            tester.move_ip(-1024,64)
-        return -1
+                    tester.move_ip(-64*x,0) #If the tester does not collide, it moves back to x=1.
+                    #mainwriter.write(f"row {8-y} is not full. Tester moved to {tester.x}, {tester.y}\n ")
+                    break #and then it breaks out of this row's loop.
+            #This is only accessed if the represented row is incomplete, a complete row returns out of the function.
+            tester.move_ip(0, 64) #This assumes the tester was successfully placed at x=1. and moves "down" one tile since the top left corner is 1,1 and down means a higher Y value.
+        return -1 #Return -1 to signify no filled lines.
+
 
     def remove(self):
         """

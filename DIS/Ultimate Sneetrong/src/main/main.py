@@ -67,7 +67,7 @@ respawn_time=15
 p1_respawn=0
 p2_respawn=0
 Victory=False
-Gamestart=False
+gamestart=False
 mainwriter.write("initialized \n")
 
 
@@ -75,7 +75,7 @@ mainwriter.write("initialized \n")
 #running the game loop
 
 
-while Gamestart == False:
+while gamestart == False:
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
         screen.fill(black)
@@ -89,7 +89,7 @@ while Gamestart == False:
             pygame.draw.rect(screen, red, (858, 38, 122, 28))
 
             if click[0] == 1:
-                Gamestart = True
+                gamestart = True
 
         else:
             pygame.draw.rect(screen, green, (858, 38, 122, 28))
@@ -224,8 +224,8 @@ while Victory==False :
 
 
     count+=1
-    if count>1:
-        count=0
+    #if count>1:
+        #count=0
     clock.tick(8)
 
 #End of game, main game loop is finished

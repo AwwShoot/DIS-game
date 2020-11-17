@@ -15,7 +15,7 @@ the \ backslash can be used for fancy formatting as well.
 
 class Logwriter:
     last_string=""
-    last_strings=["", "", "", ""]
+    last_strings=["", "", ""]
     repeat_count=0
 
     def __init__(self, directory):
@@ -50,20 +50,10 @@ class Logwriter:
     Not technically necessary, but use this instead of log.write in instances where you anticipate the same line repeating over and over and over to save space.
     """
     def write(self, string):
-        if string in self.last_strings:
-            self.repeat_count+=1
-        elif self.repeat_count>1:
-            self.log.write(f"repeated a string {self.repeat_count} times")
             self.log.write(string)
-            self.last_string = string
-            self.last_strings.append(string)
-            self.repeat_count=0
 
-        else:
-            self.log.write(string)
-            self.last_string = string
-            self.last_strings.append(string)
-            self.last_strings.pop(0)
+
+
 
 
     def end(self):
