@@ -182,8 +182,12 @@ while Victory==False :
         screen.blit(p2, box)
      # SET UP TETRONIMO SPRITES HERE
     for piece in tetronimos:
-        for box in piece.collision_boxes:
-           screen.blit(ball, box)
+        if piece.player==1:
+            for box in piece.collision_boxes:
+                screen.blit(lbs, box)
+        else:
+            for box in piece.collision_boxes:
+                screen.blit(lrs, box)
     pygame.display.update()
 
 

@@ -91,7 +91,6 @@ class Ball:
 
     def check_collision_box(self, box, snake_one, snake_two, boundaries, tetronimos):
         """
-`
         :param box: a string of "top", "bottom", "left", or "right", which relates to a collision box in the dictionary of collision boxes.
         :param snake_one: the list of collision boxes from a snake object
         :param snake_two: ditto
