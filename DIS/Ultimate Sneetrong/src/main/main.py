@@ -38,8 +38,12 @@ lrs = pygame.image.load(r'src\assets\lightredsquare.png')
 awiy = pygame.image.load(r'src\assets\winscreenred.png')
 awib = pygame.image.load(r'src\assets\winscreenblue.png')
 title = pygame.image.load(r'src\assets\titlescreen.png')
+placeholder = pygame.image.load(r'src\assets\placeholder.png')
+andyou = pygame.image.load(r'src\assets\credits.png')
+htp = pygame.image.load(r'src\assets\HowTo.png')
 
 vs = pygame.mixer.Sound(r'src/assets/victoryscreech.wav')
+
 
 '''
 this seems to have stopped working for some reason
@@ -67,35 +71,61 @@ respawn_time=15
 p1_respawn=0
 p2_respawn=0
 Victory=False
-gamestart=False
+credits=False
+howto=False
+gamestart = False
 mainwriter.write("initialized \n")
 
 
+def creditscreen():
+    pogchamp = True
+    while pogchamp:
+        screen.blit(andyou, (0, 0))
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                pogchamp = False
+
+def howtogame():
+    gamer = True
+    while gamer:
+        screen.blit(htp, (0, 0))
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                gamer = False
 
 #running the game loop
 
-
-while gamestart == False:
-        mouse = pygame.mouse.get_pos()
-        click = pygame.mouse.get_pressed()
-        screen.fill(black)
-        screen.blit(title, (0, 0))
-        for event in pygame.event.get():
-            print(event)
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
+while gamestart == False :
+    mouse = pygame.mouse.get_pos()
+    click = pygame.mouse.get_pressed()
+    screen.fill(black)
+    screen.blit(title, (0, 0))
+    for event in pygame.event.get():
+        print(event)
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            quit()
         if 858 + 122 > mouse[0] > 858 and 38 + 28 > mouse[1] > 38:
-            pygame.draw.rect(screen, red, (858, 38, 122, 28))
-
             if click[0] == 1:
-                gamestart = True
+                gamestart=True
+        if 858 + 122 > mouse[0] > 858 and 111 + 28 > mouse[1] > 111:
+            if click[0] == 1:
+                creditscreen()
+                gamestart = False
+        if 858 + 122 > mouse[0] > 858 and 184 + 29 > mouse[1] > 184:
+            if click[0] == 1:
+                howtogame()
+                gamestart = False
+    else:
+        pass
+    pygame.display.update()
 
-        else:
-            pygame.draw.rect(screen, green, (858, 38, 122, 28))
-        pygame.display.update()
 
-
+#right and proper coordinates for startgame : (858, 38, 122, 28)
+#right and proper coordinates for credits : (858, 111, 122, 28)
+#right and proper coordinates for howto : (858, 184, 122, 29)
 
 count=0
 clock = pygame.time.Clock()
@@ -233,13 +263,14 @@ while Victory==False :
     clock.tick(8)
 
 #End of game, main game loop is finished
-pygame.mixer.Sound.play(vs)
-pygame.mixer.music.stop()
+
 mainwriter.write(f"line {winning_line} cleared")
 if tetronimos[len(tetronimos)-1].player==1:
     screen.blit(awib, (0, 0))
+    pygame.display.update()
 else:
     screen.blit(awiy, (0, 0))
+    pygame.display.update()
 while True:
 
 
@@ -258,3 +289,8 @@ while True:
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
 # See Python help at https://docs.python.org/3/tutorial/
 # See PyGame help at https://www.pygame.org/docs/
+
+
+while victory:
+    pygame.mixer.Sound.play(vs)
+    pygame.mixer.music.stop()
