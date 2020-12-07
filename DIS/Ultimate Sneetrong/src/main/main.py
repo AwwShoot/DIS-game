@@ -290,7 +290,9 @@ while True:
 # See Python help at https://docs.python.org/3/tutorial/
 # See PyGame help at https://www.pygame.org/docs/
 
+'''
 
-while victory:
+while Victory:
     pygame.mixer.Sound.play(vs)
     pygame.mixer.music.stop()
+'''
