@@ -13,9 +13,5 @@ maybe the ball destroys tetris tiles on impact, adding brick breaker into the mi
 how hard will it be to score? to win?
 
 
-pyinstaller commands
+work:
 
-pyi-makespec src/main/main.py <-- makes the specification file for the .exe to be in a folder with all of it's dependencies outside
-pyi-makespec --onefile src/main/main.py <-- spec file for the .exe to contain it's dependencies
-("src/assets", "src/assets") <-- put this in the "datas" section of the .spec file to include the non-code assets
-pyinstaller main.spec <-- makes the .exe from a spec file
