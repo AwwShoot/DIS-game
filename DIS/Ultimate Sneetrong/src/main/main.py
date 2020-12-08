@@ -2,10 +2,14 @@
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
 import pygame
+import snake
 from snake import Snake
-
+import logwriter
+import tetronimo
 from logwriter import mainwriter
 from tetronimo import Tetronimo
+
+import ball
 from ball import Ball
 
 
@@ -29,15 +33,17 @@ mainwriter.write("initializing\n")
 screen = pygame.display.set_mode((1024, 512))
 pygame.display.set_caption("Ultimate Sneetrong")
 
-p1 = pygame.image.load(r'src\assets\bluesquare.png')
-p2 = pygame.image.load(r'src\assets\redsquare.png')
-ball = pygame.image.load(r'src\assets\ball.png')
-bg = pygame.image.load(r'src\assets\background.png')
-lbs = pygame.image.load(r'src\assets\lightbluesquare.png')
-lrs = pygame.image.load(r'src\assets\lightredsquare.png')
-awiy = pygame.image.load(r'src\assets\winscreenred.png')
-awib = pygame.image.load(r'src\assets\winscreenblue.png')
-title = pygame.image.load(r'src\assets\titlescreen.png')
+
+p1 = pygame.image.load(mainwriter.resource_path('src/assets/bluesquare.png'))
+p2 = pygame.image.load(mainwriter.resource_path('src/assets/redsquare.png'))
+ball = pygame.image.load(mainwriter.resource_path('src/assets/ball.png'))
+bg = pygame.image.load(mainwriter.resource_path('src/assets/background.png'))
+lbs = pygame.image.load(mainwriter.resource_path('src/assets/lightbluesquare.png'))
+lrs = pygame.image.load(mainwriter.resource_path('src/assets/lightredsquare.png'))
+awiy = pygame.image.load(mainwriter.resource_path('src/assets/winscreenred.png'))
+awib = pygame.image.load(mainwriter.resource_path('src/assets/winscreenblue.png'))
+title = pygame.image.load(mainwriter.resource_path('src/assets/titlescreen.png'))
+
 placeholder = pygame.image.load(r'src\assets\placeholder.png')
 andyou = pygame.image.load(r'src\assets\credits.png')
 htp = pygame.image.load(r'src\assets\HowTo.png')
@@ -45,12 +51,10 @@ htp = pygame.image.load(r'src\assets\HowTo.png')
 vs = pygame.mixer.Sound(r'src/assets/victoryscreech.wav')
 
 
-'''
-this seems to have stopped working for some reason
 
 
+vs = pygame.mixer.Sound(mainwriter.resource_path('src/assets/victoryscreech.wav'))
 
-'''
 
 top_boundary=pygame.rect.Rect(0,-1, 1024,1)
 bottom_boundary=pygame.rect.Rect(0,512,1024,1)
