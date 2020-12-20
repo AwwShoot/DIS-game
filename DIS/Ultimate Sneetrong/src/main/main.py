@@ -44,11 +44,11 @@ awiy = pygame.image.load(mainwriter.resource_path('src/assets/winscreenred.png')
 awib = pygame.image.load(mainwriter.resource_path('src/assets/winscreenblue.png'))
 title = pygame.image.load(mainwriter.resource_path('src/assets/titlescreen.png'))
 
-placeholder = pygame.image.load(r'src\assets\placeholder.png')
-andyou = pygame.image.load(r'src\assets\credits.png')
-htp = pygame.image.load(r'src\assets\HowTo.png')
+placeholder = pygame.image.load(mainwriter.resource_path('src/assets/placeholder.png'))
+andyou = pygame.image.load(mainwriter.resource_path('src/assets/credits.png'))
+htp = pygame.image.load(mainwriter.resource_path('src/assets/HowTo.png'))
 
-vs = pygame.mixer.Sound(r'src/assets/victoryscreech.wav')
+vs = pygame.mixer.Sound(mainwriter.resource_path('src/assets/victoryscreech.wav'))
 
 
 
@@ -262,8 +262,8 @@ while Victory==False :
 
 
     count+=1
-    #if count>1:
-        #count=0
+    if count>1:
+        count=0
     clock.tick(8)
 
 #End of game, main game loop is finished
