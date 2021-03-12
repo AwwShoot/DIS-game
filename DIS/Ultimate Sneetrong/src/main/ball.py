@@ -133,34 +133,38 @@ class Ball:
         """
 
         for box in self.collision_boxes:
-            if len(snake_one)==4:
-                if self.collision_boxes[box].colliderect(snake_one[3]) and (box=="left" or box=="right"):
-                    if box=="left":
-                        self.set_position([self.coordinates[0]+96, self.coordinates[1]], True)
-                        pygame.mixer.Sound.play(bam)
-                        pygame.mixer.music.stop()
-                        self.velocity[0] = 30
-                    else:
-                        self.set_position([self.coordinates[0]-96, self.coordinates[1]], True)
-                        pygame.mixer.Sound.play(bam)
-                        pygame.mixer.music.stop()
-                        self.velocity[0] = -30
+            # Should not crash if a snake is missing. Checks that the ball collision is with a head.
+            if (len(snake_one)==4 and self.collision_boxes[box].colliderect(snake_one[3])):
+                changeX = snake_one[3].x-snake_one[2].x
+                changeY = snake_one[3].y-snake_one[2].y
+                if changeX!=0:
+                    self.set_position([self.coordinates[0] +changeX, self.coordinates[1]], True)
+                    pygame.mixer.Sound.play(bam)
+                    pygame.mixer.music.stop()
+                    self.velocity[0] = changeX/2
+                else:
+                    self.set_position([self.coordinates[0], self.coordinates[1]+changeY], True)
+                    pygame.mixer.Sound.play(bam)
+                    pygame.mixer.music.stop()
+                    self.velocity[1] = changeY / 2
+            elif (len(snake_two) == 4 and self.collision_boxes[box].colliderect(snake_two[3])):
+                changeX = snake_two[3].x - snake_two[2].x
+                changeY = snake_two[3].y - snake_two[2].y
+                if changeX != 0:
+                    self.set_position([self.coordinates[0] + changeX, self.coordinates[1]], True)
+                    pygame.mixer.Sound.play(bam)
+                    pygame.mixer.music.stop()
+                    self.velocity[0] = changeX / 2
+                else:
+                    self.set_position([self.coordinates[0], self.coordinates[1] + changeY], True)
+                    pygame.mixer.Sound.play(bam)
+                    pygame.mixer.music.stop()
+                    self.velocity[1] = changeY / 2
 
 
 
 
-            if len(snake_two) == 4:
-                if self.collision_boxes[box].colliderect(snake_two[3]) and (box=="left" or box=="right"):
-                    if box=="left":
-                        self.set_position([self.coordinates[0]+96, self.coordinates[1]], True)
-                        pygame.mixer.Sound.play(bam)
-                        pygame.mixer.music.stop()
-                        self.velocity[0] = 30
-                    else:
-                        self.set_position([self.coordinates[0]-96, self.coordinates[1]], True)
-                        pygame.mixer.Sound.play(bam)
-                        pygame.mixer.music.stop()
-                        self.velocity[0] = -30
+
 
 
                         
