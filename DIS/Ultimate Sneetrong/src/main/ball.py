@@ -5,8 +5,8 @@ import pygame
 #this makes the audio work
 pygame.init()
 
-bong = pygame.mixer.Sound(mainwriter.resource_path("src/assets/pongsoundeffect.wav"))
-bam = pygame.mixer.Sound(mainwriter.resource_path('src/assets/bam.wav'))
+bong = pygame.mixer.Sound(r'src/assets/pongsoundeffect.wav')
+bam = pygame.mixer.Sound(r'src/assets/bam.wav')
 
 class Ball:
     def __init__(self, coordinates, velocity):

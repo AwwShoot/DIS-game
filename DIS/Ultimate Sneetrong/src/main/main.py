@@ -2,14 +2,10 @@
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
 import pygame
-import snake
 from snake import Snake
-import logwriter
-import tetronimo
+
 from logwriter import mainwriter
 from tetronimo import Tetronimo
-
-import ball
 from ball import Ball
 
 
@@ -34,6 +30,7 @@ screen = pygame.display.set_mode((1024, 512))
 pygame.display.set_caption("Ultimate Sneetrong")
 
 
+
 p1 = pygame.image.load(mainwriter.resource_path('src/assets/bluesquare.png'))
 p2 = pygame.image.load(mainwriter.resource_path('src/assets/redsquare.png'))
 ball = pygame.image.load(mainwriter.resource_path('src/assets/ball.png'))
@@ -48,13 +45,16 @@ placeholder = pygame.image.load(mainwriter.resource_path('src/assets/placeholder
 andyou = pygame.image.load(mainwriter.resource_path('src/assets/credits.png'))
 htp = pygame.image.load(mainwriter.resource_path('src/assets/HowTo.png'))
 
-vs = pygame.mixer.Sound(mainwriter.resource_path('src/assets/victoryscreech.wav'))
-
-
-
 
 vs = pygame.mixer.Sound(mainwriter.resource_path('src/assets/victoryscreech.wav'))
 
+
+'''
+this seems to have stopped working for some reason
+
+
+
+'''
 
 top_boundary=pygame.rect.Rect(0,-1, 1024,1)
 bottom_boundary=pygame.rect.Rect(0,512,1024,1)
