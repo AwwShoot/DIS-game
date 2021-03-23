@@ -30,15 +30,21 @@ class Ball:
         # A list of recent collision checks and whether or not the ball bounced. If there are three Trues in a row, it resets the ball's position.
         self.recent_bounces=[False, False, False]
         self.last_hit=""
+        # Counts down to 0 when respawning instead of moving.
+        self.respawn_timer=0
+        # When false: Do not check collision. Ball is respawning and should not be touched.
+        self.colliding=True
 
 
     def move(self):
+        if self.respawn_timer>0:
+            self.respawn()
 
         #This will be called every "frame" of the game, whatever that may be
         if(self.recent_bounces[0] and self.recent_bounces[1] and self.recent_bounces[2]):
-            self.set_position([512, 256], False)
+            self.destroy()
         if(self.coordinates[0]>1100 or self.coordinates[0]<-100 or self.coordinates[1]>612 or self.coordinates[1]<-100):
-            self.set_position([512, 256], False)
+            self.destroy()
         self.coordinates[0] += self.velocity[0]
         self.coordinates[1] += self.velocity[1]
         self.sprite_box.move(self.velocity[0], self.velocity[1])
@@ -162,18 +168,6 @@ class Ball:
                     self.velocity[1] = changeY / 2
 
 
-
-
-
-
-
-                        
-
-
-
-
-
-
         if self.check_collision_box("top", snake_one, snake_two, boundaries, tetronimos):
             self.recent_bounces.pop(0)
             self.recent_bounces.append(True)
@@ -211,7 +205,7 @@ class Ball:
         right_colliding=self.check_collision_box("right", snake_one, snake_two, boundaries, tetronimos)
         total_collisions= (1 if top_colliding else 0) + (1 if bottom_colliding else 0) + (1 if left_colliding else 0) + (1 if right_colliding else 0)
         if total_collisions==4:
-            self.set_position([512, 256], False)
+            self.destroy()
         # Double asterisks (**) expnonentiate the value rather than multiply (like the ^ on a calculator).
         # For the math of this shunting, basically the deeper into the object you are, the further you are pushed out. 8 pixels for one collision, 16 for two and 32 for three
         if top_colliding:
@@ -230,10 +224,10 @@ class Ball:
         :return: 0 if no score, 1 if P1 scores (ball in right goal) 2 if P2 scores (ball in left goal)
         """
         if self.coordinates[0]+32>960:
-            self.set_position([512, 256], False)
+            self.destroy()
             return 1
         if self.coordinates[0]+32<64:
-            self.set_position([512, 256], False)
+            self.destroy()
             return 2
         return 0
 
@@ -270,4 +264,26 @@ class Ball:
             self.velocity[0] += 1
             mainwriter.write(f"now {self.velocity[0]} \n")
 
+
+    # Both of these functions are entirely self-contained. Tinker around with them as much as you need to get the animation looking cool and good :]
+    def destroy(self):
+        """
+        Sets respawn time to the appropriate number of ticks and resets the ball for respawning.
+        Called when the ball would despawn on older versions of the code
+        """
+        self.set_position([512, 64], False)
+        self.respawn_timer=1
+        self.colliding=False
+
+    def respawn(self):
+        """
+        decreases respawn timer and potentially plays the respawn animation.
+        Called instead of move() whenever respawn_timer>0
+        """
+        if self.respawn_timer<=0:
+            self.colliding=True
+            self.respawn_timer=0
+        else:
+            self.respawn_timer-=1
+            #Play the next frame here(?)
 
