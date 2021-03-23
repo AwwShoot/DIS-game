@@ -62,7 +62,7 @@ class Ball:
         else:
             mainwriter.write("Bouncing vertically: \n")
             self.velocity[1]= 0 - self.velocity[1]
-
+        self.move()
         self.manage_speed()
         pygame.mixer.Sound.play(bong)
         pygame.mixer.music.stop()
@@ -124,7 +124,7 @@ class Ball:
     def check_collision(self, snake_one, snake_two, boundaries, tetronimos):
         """
         this will be called by the main program during the game loop
-        It checks through the boxes prioritizing horizontal bounces first
+        It checks through the boxes prioritizing verticle bounces first
         :param tetronimos: a list of collision boxes from tetronimos. premade in main.py
         :param snake_one: a list of collision boxes from a snake object
         :param snake_two: ditto
@@ -178,25 +178,25 @@ class Ball:
             self.recent_bounces.pop(0)
             self.recent_bounces.append(True)
             self.bounce(False)
-            self.try_shunt(snake_one, snake_two, boundaries, tetronimos)
+            #self.try_shunt(snake_one, snake_two, boundaries, tetronimos)
             return True
         elif self.check_collision_box("bottom", snake_one, snake_two, boundaries, tetronimos):
             self.recent_bounces.pop(0)
             self.recent_bounces.append(True)
             self.bounce(False)
-            self.try_shunt(snake_one, snake_two, boundaries, tetronimos)
+            #self.try_shunt(snake_one, snake_two, boundaries, tetronimos)
             return True
         elif self.check_collision_box("left", snake_one, snake_two, boundaries, tetronimos):
             self.recent_bounces.pop(0)
             self.recent_bounces.append(True)
             self.bounce(True)
-            self.try_shunt(snake_one, snake_two, boundaries, tetronimos)
+            #self.try_shunt(snake_one, snake_two, boundaries, tetronimos)
             return True
         elif self.check_collision_box("right", snake_one, snake_two, boundaries, tetronimos):
             self.recent_bounces.pop(0)
             self.recent_bounces.append(True)
             self.bounce(True)
-            self.try_shunt(snake_one, snake_two, boundaries, tetronimos)
+            #self.try_shunt(snake_one, snake_two, boundaries, tetronimos)
             return True
 
 
