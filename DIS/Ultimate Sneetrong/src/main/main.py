@@ -49,6 +49,7 @@ htp = pygame.image.load(mainwriter.resource_path('src/assets/HowTo.png'))
 vs = pygame.mixer.Sound(mainwriter.resource_path('src/assets/victoryscreech.wav'))
 
 
+
 '''
 this seems to have stopped working for some reason
 
