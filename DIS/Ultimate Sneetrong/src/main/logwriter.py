@@ -39,6 +39,9 @@ class Logwriter:
         output+= "\n"
         self.write(output)'''
 
+    def print_coordinates(self, coordinates):
+        print(f"coordinates: {coordinates[0]}, {coordinates[1]}")
+
 
     def write_position(self, coordinates):
         pass

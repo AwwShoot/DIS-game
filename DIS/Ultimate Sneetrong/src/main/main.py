@@ -194,7 +194,16 @@ while Victory==False :
         player_two.move(player_two.last_move)
 
     pong_ball.move()
+
+    # Tetronimo movement
+
     for piece in tetronimos:
+        if not piece.active:
+            tetronimos.pop(tetronimos.index(piece))
+        if piece.splitting:
+            tetronimos.extend(piece.build_from_list())
+            piece.remove()
+            continue
         piece.move(boundaries, tetronimos)
 
     #respawn countdown

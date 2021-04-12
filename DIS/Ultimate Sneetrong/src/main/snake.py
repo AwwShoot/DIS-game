@@ -81,8 +81,8 @@ class Snake:
         replaces a removed snake.
         """
         if self.removed:
-            self.coordinates = [[0 + (self.player * 15 - 15), 0], [0 + (self.player * 15 - 15), 1],
-                                [0 + (self.player * 15 - 15), 2], [0 + (self.player * 15 - 15), 3]]
+            self.coordinates = [[(self.player * 15 - 15), 0], [(self.player * 15 - 15), 1],
+                                [(self.player * 15 - 15), 2], [(self.player * 15 - 15), 3]]
             for i in self.coordinates:
                 self.collision_boxes.append(rect.Rect(i[0] * 64, i[1] * 64, 64, 64))
             self.removed=False
@@ -98,20 +98,17 @@ class Snake:
         """
         head=self.collision_boxes[-1]
         if head.collidelist(opponent)!=-1 or head.collidelist(boundaries)!=-1:
-            mainwriter.write("snake? snaaaaake!\n")
             self.remove()
             return True
 
         for piece in tetronimos:
             if head.collidelist(piece.collision_boxes)!=-1:
-                piece.remove()
-                mainwriter.write("snake? snaaaaake!\n")
+                piece.split(self.coordinates[3])
                 self.remove()
                 return True
 
         for i in self.coordinates:
             if i[0]<0 or i[0]>15 or i[1]<0 or i[1]>7:
-                mainwriter.write("snake out of bounds\n")
                 self.remove()
                 return True
         return False
@@ -127,9 +124,9 @@ class Snake:
         """
 
 
-        chunk=Tetronimo(self.coordinates, self.player)
+        piece=Tetronimo(self.coordinates, self.player)
         self.remove()
-        return chunk
+        return piece
 
 
 
