@@ -223,10 +223,10 @@ class Ball:
         Run this to check if a player has scored.
         :return: 0 if no score, 1 if P1 scores (ball in right goal) 2 if P2 scores (ball in left goal)
         """
-        if self.coordinates[0]+32>960:
+        if self.coordinates[0]+32>992:
             self.destroy()
             return 1
-        if self.coordinates[0]+32<64:
+        if self.coordinates[0]+32<32:
             self.destroy()
             return 2
         return 0
