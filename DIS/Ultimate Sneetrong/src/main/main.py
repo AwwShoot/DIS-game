@@ -135,8 +135,8 @@ while gamestart == False :
 count=0
 clock = pygame.time.Clock()
 while Victory==False :
-    moved=False
-    moved2=False
+    player_one.moving=False
+    player_two.moving=False
 
     for event in pygame.event.get():
         #Quit clause
@@ -149,48 +149,48 @@ while Victory==False :
             if event.key == pygame.K_a:
                 if player_one.last_move!="right":
                     player_one.move("left")
-                    moved = True
+
             elif event.key == pygame.K_d:
                 if player_one.last_move != "left":
                     player_one.move("right")
-                    moved = True
+
             elif event.key == pygame.K_w:
                 if player_one.last_move != "down":
                     player_one.move("up")
-                    moved = True
+
             elif event.key == pygame.K_s:
                 if player_one.last_move != "up":
                     player_one.move("down")
-                    moved = True
+
 
         #Player 2 input
         if event.type == pygame.KEYDOWN and player_two.removed==False:
             if event.key == pygame.K_LEFT:
                 if player_two.last_move != "right":
                     player_two.move("left")
-                    moved2 = True
+
             elif event.key == pygame.K_RIGHT:
                 if player_two.last_move != "left":
                     player_two.move("right")
-                    moved2 = True
+
             elif event.key == pygame.K_UP:
                 if player_two.last_move != "down":
                     player_two.move("up")
-                    moved2 = True
+
             elif event.key == pygame.K_DOWN:
                 if player_two.last_move != "up":
                     player_two.move("down")
-                    moved2 = True
+
 
 
 
 #right and proper coordinates: (858, 38, 122, 28)
 
 
-    if not moved and count==1:
+    if not player_one.moving and count==1 and not player_one.last_move=="":
         player_one.move(player_one.last_move)
 
-    if not moved2 and count==1:
+    if not player_two.moving and count==1 and not player_two.last_move=="":
         player_two.move(player_two.last_move)
 
     pong_ball.move()
@@ -234,6 +234,14 @@ while Victory==False :
                 screen.blit(lrs, box)
     pygame.display.update()
 
+    # scoring check.
+    scorer = pong_ball.score(left_boundary, right_boundary)
+    if scorer == 1 and player_one.removed == False:
+        tetronimos.append(player_one.tetrify())
+        p1_respawn = respawn_time / 3
+    elif scorer == 2 and player_two.removed == False:
+        tetronimos.append(player_two.tetrify())
+        p2_respawn = respawn_time / 3
 
     # Collision check
     tetronimo_boxes=[]
@@ -241,7 +249,7 @@ while Victory==False :
         for box in piece.collision_boxes:
             tetronimo_boxes.append(box)
 
-    pong_ball.check_collision(player_one.collision_boxes, player_two.collision_boxes, boundaries, tetronimo_boxes)
+    pong_ball.check_collision(player_one, player_two, boundaries, tetronimo_boxes)
     if player_one.removed==False:
         p1_collided=player_one.check_collision(player_two.collision_boxes, boundaries, tetronimos)
     if player_two.removed==False:
@@ -253,14 +261,7 @@ while Victory==False :
         p2_respawn=respawn_time
         p2_collided=False
 
-    #scoring check.
-    scorer=pong_ball.score()
-    if scorer==1 and player_one.removed==False:
-        tetronimos.append(player_one.tetrify())
-        p1_respawn=respawn_time/3
-    elif scorer==2 and player_two.removed==False:
-        tetronimos.append(player_two.tetrify())
-        p2_respawn=respawn_time/3
+
 
     #victory check
     if len(tetronimos)!=0:

@@ -127,7 +127,7 @@ class Ball:
 
 
 
-    def check_collision(self, snake_one, snake_two, boundaries, tetronimos):
+    def check_collision(self, p1, p2, boundaries, tetronimos):
         """
         this will be called by the main program during the game loop
         It checks through the boxes prioritizing verticle bounces first
@@ -137,10 +137,14 @@ class Ball:
         :param boundaries: a list of collision boxes for any other boundaries such as the edge of the screen.
         :return: true if it bounces.
         """
+        #changed snake_one/two params to be p1/2 just to bring in the .moving bool.
+        snake_one=p1.collision_boxes
+        snake_two=p2.collision_boxes
 
         for box in self.collision_boxes:
             # Should not crash if a snake is missing. Checks that the ball collision is with a head.
-            if (len(snake_one)==4 and self.collision_boxes[box].colliderect(snake_one[3])):
+            if len(snake_one)==4 and self.collision_boxes[box].colliderect(snake_one[3]) and p1.moving:
+
                 changeX = snake_one[3].x-snake_one[2].x
                 changeY = snake_one[3].y-snake_one[2].y
                 if changeX!=0:
@@ -153,7 +157,8 @@ class Ball:
                     pygame.mixer.Sound.play(bam)
                     pygame.mixer.music.stop()
                     self.velocity[1] = changeY / 2
-            elif (len(snake_two) == 4 and self.collision_boxes[box].colliderect(snake_two[3])):
+            elif len(snake_two) == 4 and self.collision_boxes[box].colliderect(snake_two[3]) and p2.moving:
+
                 changeX = snake_two[3].x - snake_two[2].x
                 changeY = snake_two[3].y - snake_two[2].y
                 if changeX != 0:
@@ -218,17 +223,17 @@ class Ball:
             self.set_position([self.coordinates[0] - 4 * (1+2 ** total_collisions), self.coordinates[1]], True)
 
 
-    def score(self):
+    def score(self, left_goal, right_goal):
         """
         Run this to check if a player has scored.
         :return: 0 if no score, 1 if P1 scores (ball in right goal) 2 if P2 scores (ball in left goal)
         """
-        if self.coordinates[0]+32>992:
-            self.destroy()
-            return 1
-        if self.coordinates[0]+32<32:
+        if self.collision_boxes["left"].colliderect(left_goal):
             self.destroy()
             return 2
+        if self.collision_boxes["right"].colliderect(right_goal):
+            self.destroy()
+            return 1
         return 0
 
     def manage_speed(self):

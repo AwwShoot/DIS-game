@@ -21,6 +21,8 @@ class Snake:
         self.last_move=""
         self.player=player
         self.removed=False
+        # Tag for telling if the snake moved this tick or not.
+        self.moving=False
 
 
 
@@ -34,6 +36,8 @@ class Snake:
     This function will modify the coordinates of the snake appropriately 
     """
     def move(self, direction):
+        print(direction)
+        self.moving=True
         # coordinates[2] represents the current head piece before a new head piece is made
         if direction=="up":
 
