@@ -292,13 +292,14 @@ while Victory==False :
     pygame.display.update()
 
     # scoring check.
-    scorer = pong_ball.score(left_boundary, right_boundary)
-    if scorer == 1 and player_one.removed == False:
-        tetronimos.append(player_one.tetrify())
-        p1_respawn = respawn_time / 3
-    elif scorer == 2 and player_two.removed == False:
-        tetronimos.append(player_two.tetrify())
-        p2_respawn = respawn_time / 3
+    if pong_ball.colliding==True:
+        scorer = pong_ball.score(left_boundary, right_boundary)
+        if scorer == 1 and player_one.removed == False:
+            tetronimos.append(player_one.tetrify())
+            p1_respawn = respawn_time / 3
+        elif scorer == 2 and player_two.removed == False:
+            tetronimos.append(player_two.tetrify())
+            p2_respawn = respawn_time / 3
 
     # Collision check
     tetronimo_boxes=[]

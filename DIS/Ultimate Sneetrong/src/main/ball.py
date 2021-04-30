@@ -287,8 +287,8 @@ class Ball:
         Sets respawn time to the appropriate number of ticks and resets the ball for respawning.
         Called when the ball would despawn on older versions of the code
         """
-        self.set_position([512, 64], False)
-        self.respawn_timer=1
+
+        self.respawn_timer=12
         self.colliding=False
 
     def respawn(self):
