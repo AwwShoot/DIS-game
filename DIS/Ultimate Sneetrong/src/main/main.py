@@ -40,6 +40,12 @@ lrs = pygame.image.load(mainwriter.resource_path('src/assets/lightredsquare.png'
 awiy = pygame.image.load(mainwriter.resource_path('src/assets/winscreenred.png'))
 awib = pygame.image.load(mainwriter.resource_path('src/assets/winscreenblue.png'))
 title = pygame.image.load(mainwriter.resource_path('src/assets/titlescreen.png'))
+frame1 = pygame.image.load(mainwriter.resource_path('src/assets/frame1.png'))
+frame2 = pygame.image.load(mainwriter.resource_path('src/assets/frame2.png'))
+frame3 = pygame.image.load(mainwriter.resource_path('src/assets/frame3.png'))
+frame4 = pygame.image.load(mainwriter.resource_path('src/assets/frame4.png'))
+frame5 = pygame.image.load(mainwriter.resource_path('src/assets/frame5.png'))
+frame6 = pygame.image.load(mainwriter.resource_path('src/assets/frame6.png'))
 
 placeholder = pygame.image.load(mainwriter.resource_path('src/assets/placeholder.png'))
 andyou = pygame.image.load(mainwriter.resource_path('src/assets/credits.png'))
@@ -50,12 +56,12 @@ vs = pygame.mixer.Sound(mainwriter.resource_path('src/assets/victoryscreech.wav'
 
 
 
-'''
-this seems to have stopped working for some reason
 
 
 
-'''
+
+
+
 
 top_boundary=pygame.rect.Rect(0,-1, 1024,1)
 bottom_boundary=pygame.rect.Rect(0,512,1024,1)
@@ -193,7 +199,18 @@ while Victory==False :
     if not player_two.moving and count==1 and not player_two.last_move=="":
         player_two.move(player_two.last_move)
 
-    pong_ball.move()
+
+    #screen.blit(frame1, (512, 64))
+    #screen.blit(frame2, (512, 64))
+    #screen.blit(frame3, (512, 64))
+    #screen.blit(frame4, (512, 64))
+    #screen.blit(frame5, (512, 64))
+    #screen.blit(frame6, (512, 64))
+
+
+    frame=pong_ball.move()
+
+
 
     # Tetronimo movement
 
@@ -218,8 +235,48 @@ while Victory==False :
         p2_respawn-=1
 
     # Display update
-    screen.blit(bg, (0, 0))
-    screen.blit(ball, (pong_ball.coordinates[0], pong_ball.coordinates[1]))
+    screen.blit(bg, (0, 0))#See how things are here? What if we were to simply copy it again and shift the numbers to reflect destruction?
+    if pong_ball.respawn_timer==0:
+        screen.blit(ball, (pong_ball.coordinates[0], pong_ball.coordinates[1]))
+    if frame == 1:
+        screen.blit(frame1, pong_ball.coordinates)
+    if frame == 2:
+        screen.blit(frame2, pong_ball.coordinates)
+    if frame == 3:
+        screen.blit(frame3, pong_ball.coordinates)
+    if frame == 4:
+        screen.blit(frame4, pong_ball.coordinates)
+    if frame == 5:
+        screen.blit(frame5, pong_ball.coordinates)
+    if frame == 6:
+        screen.blit(frame6, pong_ball.coordinates)
+
+
+
+
+
+    #we can still communicate here
+    #why are we deleting things? I am cutting/pasting them to just be in order. ok, jsut asking
+        #There will be no functional change because only one of these statements should activate per frame anyways
+        # This code sharing thing HATES indentation
+
+    if frame == 7:
+        screen.blit(frame6, pong_ball.coordinates)
+    if frame == 8:
+        screen.blit(frame5, pong_ball.coordinates)
+    if frame == 9:
+        screen.blit(frame4, pong_ball.coordinates)
+    if frame == 10:
+        screen.blit(frame3, pong_ball.coordinates)
+    if frame == 11:
+        screen.blit(frame2, pong_ball.coordinates) #Everywhere involved that *could* be where it hangs. Like in this if statement.
+        print("Is it working here?")
+    if frame == 12:
+        screen.blit(frame1, pong_ball.coordinates)
+
+#now do i run it?
+#I am a little stumped. Time for the most powerful debugging tool: Throwing print() statements everywhere to see exactly what happens. ok, where do we throw them first?
+
     for box in player_one.collision_boxes:
         screen.blit(p1, box)
     for box in player_two.collision_boxes:
@@ -270,6 +327,9 @@ while Victory==False :
             #USE VICTORY SCREENS HERE
             Victory=True
 
+#uh it worked sometimes, it is now sometimes not noticing collison w/ the wall and then not scoring a point The wall as in the edge of the screen wall or all collisions? edge of the screen, it sometimes just yeets past it and doesnt score
+    #Does the ball respawn from going out of bounds?
+    #eventually, ill share screen again just be muted
 
 
     count+=1
