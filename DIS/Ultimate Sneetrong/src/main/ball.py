@@ -2,6 +2,7 @@
 from logwriter import mainwriter
 import pygame
 
+
 #this makes the audio work
 pygame.init()
 
@@ -36,9 +37,16 @@ class Ball:
         self.colliding=True
 
 
-    def move(self):
-        if self.respawn_timer>0:
-            self.respawn()
+    def move(self): #Let's just make sure it cannot move until it's set to true
+        if self.respawn_timer>0 or self.colliding==False: #Again, this *should* catch all issues. But with my sphaghetti code, life finds a way. let's give 'er a run
+            print(f"It's calling the respan function at {self.respawn_timer}")
+            self.respawn()#If it is above, the movement will happen before the respawn() function calls and lowers the timer, so we will have to account for that.
+
+            if self.respawn_timer==6: #So, move() is called first before any respawn animation shenanigans in main.py. So this will be called before an animation for the frame.
+
+                self.set_position([512, 64], False)
+            return self.respawn_timer
+
 
         #This will be called every "frame" of the game, whatever that may be
         if(self.recent_bounces[0] and self.recent_bounces[1] and self.recent_bounces[2]):
@@ -265,8 +273,11 @@ class Ball:
             mainwriter.write(f"now {self.velocity[0]} \n")
 
 
+
     # Both of these functions are entirely self-contained. Tinker around with them as much as you need to get the animation looking cool and good :]
     def destroy(self):
+
+
         """
         Sets respawn time to the appropriate number of ticks and resets the ball for respawning.
         Called when the ball would despawn on older versions of the code

@@ -64,8 +64,6 @@ class Logwriter:
 
 
 
-
-
     def end(self):
         pass
         '''
