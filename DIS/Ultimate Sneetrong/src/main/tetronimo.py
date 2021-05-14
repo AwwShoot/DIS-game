@@ -24,7 +24,7 @@ class Tetronimo:
         self.collision_boxes=[]
         for pair in coordinates:
             # boxes are an extra pixel tall downwards. This is so they can check collision immediately below them without moving or other funky stuff.
-            self.collision_boxes.append(rect.Rect(pair[0]*64, pair[1]*64, 64, 65))
+            self.collision_boxes.append(rect.Rect(pair[0]*64, pair[1]*64, 64, 64))
 
     def move(self, boundaries, tetronimos):
         """
@@ -33,15 +33,19 @@ class Tetronimo:
         :param tetronimos: list of tetronimos present in the world.
         checks if a tetronimo can move first before dropping it down.
         """
+        testing_boxes=[]
 
         for box in self.collision_boxes:
-            if box.collidelist(boundaries) != -1:
+            testing_boxes.append(rect.Rect(box.x, box.y+64, 1, 1))
+
+        for tester in testing_boxes:
+            if tester.collidelist(boundaries) != -1:
                 return
 
         for piece in tetronimos:
             if piece.ID!=self.ID:
-                for box in self.collision_boxes:
-                    if box.collidelist(piece.collision_boxes) != -1:
+                for tester in testing_boxes:
+                    if tester.collidelist(piece.collision_boxes) != -1:
                         return
 
         for box in self.collision_boxes:
@@ -83,17 +87,28 @@ class Tetronimo:
         self.collision_boxes=[]
 
 
-    def check_adjacent(self, center, piece_list, index, value):
+    def check_adjacent(self, center, boxes, index, value):
         """
 
         :param center: The center piece being checked
-        :param piece_list: The list of peices being checked
+        :param boxes: The list of peices being checked
         :param index: The index of the pair to compare
         :param value: The value to compare the center and pair by
         :return: The INDEX of the adjacent pair in the coords array.
         """
+        if index==1:
+            opposite_index=0
+        else:
+            opposite_index=1
+
+        piece_list=[]
+        for box in boxes:
+            piece_list.append([box.x, box.y])
+
+        center_coords=[center[0], center[1]]
         for pair in piece_list:
-            if center[index]+value==pair[index]:
+            if center_coords[index]+value*64==pair[index] and center_coords[opposite_index]==pair[opposite_index]:
+                print(f"code says that {center[0]/64}, {center[1]/64} is adjacent to {pair[0]/64}, {pair[1]/64}")
                 return piece_list.index(pair)
         return None
 
@@ -104,46 +119,57 @@ class Tetronimo:
         :return: a list of pieces made from the original list of coordinates.
         """
 
-        orig_length=len(self.coordinates)
-        print(f"{orig_length} is the start")
+        original_length=len(self.collision_boxes)
+        if original_length!=len(self.coordinates):
+            self.coordinates=self.make_coordinates(self.collision_boxes)
+        print(f"{original_length} is the start") #debug info
 
-        final_coords=[]
-        final_pieces=[]
+        unbuilt_pieces=[]
+        final_pieces=[] #instantiation
 
-        while len(self.coordinates)>0:
-            print(len(self.coordinates))
+        while len(self.collision_boxes)>0: #as long as the tetronimo has pieces.
 
-            origin = self.coordinates.pop(0) #Create the origin of the new piece inside the while loop so it makes a new one each time.
+
+            origin = self.collision_boxes.pop(0) #The first tile in the list will be the origin for the new piece.
+
+            self.coordinates.pop(0)
             new_piece=[]
-            new_piece.append(origin)
+            new_piece.append(origin) #instantiation.
 
             for center in new_piece:
-                index = self.check_adjacent(center, self.coordinates, 0, -1)
-                if index is not None:
-                    new_piece.append(self.coordinates.pop(index))
+                index = self.check_adjacent(center, self.collision_boxes, 0, -1)
+                if index is not None and index < len(self.collision_boxes):
+                    new_piece.append(self.collision_boxes.pop(index))
                     print("Found an adjacent tile (left). Adding it to the new piece and removing it from the original list")
 
-                index = self.check_adjacent(center, self.coordinates, 0, 1)
-                if index is not None:
-                    new_piece.append(self.coordinates.pop(index))
+                index = self.check_adjacent(center, self.collision_boxes, 0, 1)
+                if index is not None and index < len(self.collision_boxes):
+                    new_piece.append(self.collision_boxes.pop(index))
                     print("Found an adjacent tile (right). Adding it to the new piece and removing it from the original list")
 
-                index = self.check_adjacent(center, self.coordinates, 1, -1)
-                if index is not None:
-                    new_piece.append(self.coordinates.pop(index))
+                index = self.check_adjacent(center, self.collision_boxes, 1, -1)
+                if index is not None and index < len(self.collision_boxes):
+                    new_piece.append(self.collision_boxes.pop(index))
                     print("Found an adjacent tile (up). Adding it to the new piece and removing it from the original list")
 
-                index = self.check_adjacent(center, self.coordinates, 1, 1)
-                if index is not None:
-                    new_piece.append(self.coordinates.pop(index))
+                index = self.check_adjacent(center, self.collision_boxes, 1, 1)
+                if index is not None and index < len(self.collision_boxes):
+                    new_piece.append(self.collision_boxes.pop(index))
                     print("Found an adjacent tile (down). Adding it to the new piece and removing it from the original list")
 
-            final_coords.append(new_piece)
+            unbuilt_pieces.append(new_piece)
             print(f"New piece has been added with a length of {len(new_piece)}. The original list should be that many items shorter")
 
-        for pair_set in final_coords:
-            final_pieces.append(Tetronimo(pair_set, self.player))
+        for set in unbuilt_pieces:
+            coordinates=[]
+            for box in set:
+                coordinates.append([box.x/64, box.y/64])
+
+            final_pieces.append(Tetronimo(coordinates, self.player))
+
+
         self.splitting=False
+        print(f"there should be {len(final_pieces)} chunks")
         if final_pieces!= []:
             return final_pieces
         else:
@@ -151,9 +177,11 @@ class Tetronimo:
 
     def split(self, coords):
         valid = False
-        for pair in self.coordinates:
-            if pair[0] == coords[0] and pair[1] == coords[1]:
-                self.coordinates.pop(self.coordinates.index(coords))
+        position=-1
+        for box in self.collision_boxes:
+            position+=1
+            if box.x == coords[0]*64 and box.y == coords[1]*64:
+                self.collision_boxes.pop(position)
                 valid = True
                 print(f"valid coordinates {coords[0]} {coords[1]}")
                 break
@@ -163,3 +191,10 @@ class Tetronimo:
             print(f"invalid coordinates {coords[0]} {coords[1]}")
             for pair in self.coordinates:
                 mainwriter.print_coordinates(pair)
+
+    def make_coordinates(self, collision_boxes):
+        new_coords=[]
+        for box in collision_boxes:
+            new_coords.append([box.x/64, box.y/64])
+
+        return new_coords

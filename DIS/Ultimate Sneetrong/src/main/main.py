@@ -220,6 +220,7 @@ while Victory==False :
         if piece.splitting:
             tetronimos.extend(piece.build_from_list())
             piece.remove()
+            tetronimos.pop(tetronimos.index(piece))
             continue
         piece.move(boundaries, tetronimos)
 

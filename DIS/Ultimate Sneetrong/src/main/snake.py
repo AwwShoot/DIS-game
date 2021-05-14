@@ -36,7 +36,7 @@ class Snake:
     This function will modify the coordinates of the snake appropriately 
     """
     def move(self, direction):
-        print(direction)
+
         self.moving=True
         # coordinates[2] represents the current head piece before a new head piece is made
         if direction=="up":
